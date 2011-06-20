@@ -22,10 +22,18 @@
 #include <transport/TSocket.h>
 
 #include <iostream>
+#ifndef WIN32
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
+#else
+#include <WinSock2.h>
+#include <io.h>
+#include <ws2tcpip.h>
+#undef gai_strerror
+#define gai_strerror gai_strerrorA
+#endif
 #include <fcntl.h>
 #include <errno.h>
 #include <assert.h>
@@ -708,7 +716,7 @@ void TNonblockingServer::listenSocket() {
   #ifdef IPV6_V6ONLY
   if (res->ai_family == AF_INET6) {
     int zero = 0;
-    if (-1 == setsockopt(s, IPPROTO_IPV6, IPV6_V6ONLY, &zero, sizeof(zero))) {
+    if (-1 == setsockopt(s, IPPROTO_IPV6, IPV6_V6ONLY, (const char*)&zero, sizeof(zero))) {
       GlobalOutput("TServerSocket::listen() IPV6_V6ONLY");
     }
   }
@@ -718,9 +726,9 @@ void TNonblockingServer::listenSocket() {
   int one = 1;
 
   // Set reuseaddr to avoid 2MSL delay on server restart
-  setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
+  setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (const char*)&one, sizeof(one));
 
-  if (bind(s, res->ai_addr, res->ai_addrlen) == -1) {
+  if (::bind(s, res->ai_addr, res->ai_addrlen) == -1) {
     close(s);
     freeaddrinfo(res0);
     throw TException("TNonblockingServer::serve() bind");
@@ -750,15 +758,15 @@ void TNonblockingServer::listenSocket(int s) {
   struct linger ling = {0, 0};
 
   // Keepalive to ensure full result flushing
-  setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, &one, sizeof(one));
+  setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (const char*)&one, sizeof(one));
 
   // Turn linger off to avoid hung sockets
-  setsockopt(s, SOL_SOCKET, SO_LINGER, &ling, sizeof(ling));
+  setsockopt(s, SOL_SOCKET, SO_LINGER, (const char*)&ling, sizeof(ling));
 
   // Set TCP nodelay if available, MAC OS X Hack
   // See http://lists.danga.com/pipermail/memcached/2005-March/001240.html
   #ifndef TCP_NOPUSH
-  setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one));
+  setsockopt(s, IPPROTO_TCP, TCP_NODELAY, (const char*)&one, sizeof(one));
   #endif
 
   #ifdef TCP_LOW_MIN_RTO
@@ -777,7 +785,11 @@ void TNonblockingServer::listenSocket(int s) {
 }
 
 void TNonblockingServer::createNotificationPipe() {
+#ifdef WIN32
+  if (_pipe(notificationPipeFDs_, 256, O_BINARY) != 0) {
+#else
   if (pipe(notificationPipeFDs_) != 0) {
+#endif
     GlobalOutput.perror("TNonblockingServer::createNotificationPipe ", errno);
       throw TException("can't create notification pipe");
   }

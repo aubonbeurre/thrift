@@ -35,7 +35,7 @@ class TAsyncTransport;
 
 class TAsyncChannel {
  public:
-  typedef std::tr1::function<void()> VoidCallback;
+  typedef std::tr1::function<bool()> VoidCallback;
 
   virtual ~TAsyncChannel() {}
 

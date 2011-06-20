@@ -21,11 +21,7 @@
 #define _THRIFT_CONCURRENCY_THREADMANAGER_H_ 1
 
 #include <boost/shared_ptr.hpp>
-#ifndef WIN32
 #include <tr1/functional>
-#else
-#include <boost/tr1/functional.hpp>
-#endif
 #include <sys/types.h>
 #include "Thread.h"
 

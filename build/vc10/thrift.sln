@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "server\server.vcxproj", "{7721BC13-8A32-414A-ABCA-0DA938C34BDB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{93DCC038-0172-4789-9BFA-864FE63807B1} = {93DCC038-0172-4789-9BFA-864FE63807B1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thriftnb", "thriftnb\thriftnb.vcxproj", "{93DCC038-0172-4789-9BFA-864FE63807B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +18,10 @@ Global
 		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Debug|Win32.Build.0 = Debug|Win32
 		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Release|Win32.ActiveCfg = Release|Win32
 		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Release|Win32.Build.0 = Release|Win32
+		{93DCC038-0172-4789-9BFA-864FE63807B1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{93DCC038-0172-4789-9BFA-864FE63807B1}.Debug|Win32.Build.0 = Debug|Win32
+		{93DCC038-0172-4789-9BFA-864FE63807B1}.Release|Win32.ActiveCfg = Release|Win32
+		{93DCC038-0172-4789-9BFA-864FE63807B1}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

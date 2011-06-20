@@ -68,7 +68,9 @@ class PthreadThread: public Thread {
  public:
 
   PthreadThread(int policy, int priority, int stackSize, bool detached, shared_ptr<Runnable> runnable) :
-    pthread_(0),
+#ifndef _WIN32 //WIN32 Pthreads implementation expects stucture, not int for pthread_t!
+	 pthread_(0),
+#endif
     state_(uninitialized),
     policy_(policy),
     priority_(priority),
@@ -114,6 +116,10 @@ class PthreadThread: public Thread {
     }
 
     // Set thread policy
+	#ifdef _WIN32
+	//WIN32 Pthread implementation doesn't seem to support sheduling policies other then PosixThreadFactory::OTHER - runtime error
+	policy_ = PosixThreadFactory::OTHER;
+    #endif
     if (pthread_attr_setschedpolicy(&thread_attr, policy_) != 0) {
       throw SystemResourceException("pthread_attr_setschedpolicy failed");
     }
@@ -152,7 +158,11 @@ class PthreadThread: public Thread {
   }
 
   Thread::id_t getId() {
-    return (Thread::id_t)pthread_;
+#ifndef _WIN32 //WIN32 Pthreads implementation expects stucture, not int for pthread_t!
+     return (Thread::id_t)pthread_;
+#else
+    return (Thread::id_t)pthread_.p;
+#endif
   }
 
   shared_ptr<Runnable> runnable() const { return Thread::runnable(); }
@@ -236,7 +246,7 @@ class PosixThreadFactory::Impl {
     max_priority = sched_get_priority_max(pthread_policy);
 #endif
     int quanta = (HIGHEST - LOWEST) + 1;
-    float stepsperquanta = (max_priority - min_priority) / quanta;
+    float stepsperquanta = (float)(max_priority - min_priority) / quanta;
 
     if (priority <= HIGHEST) {
       return (int)(min_priority + stepsperquanta * priority);
@@ -286,7 +296,11 @@ class PosixThreadFactory::Impl {
   void setDetached(bool value) { detached_ = value; }
 
   Thread::id_t getCurrentThreadId() const {
-    return (Thread::id_t)pthread_self();
+#ifndef _WIN32 //WIN32 Pthreads implementation expects stucture, not int for pthread_t!
+     return (Thread::id_t)pthread_self();
+#else
+    return (Thread::id_t)pthread_self().p;
+#endif _WIN32
   }
 
 };
