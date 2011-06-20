@@ -178,7 +178,7 @@ class TNonblockingServer : public TServer {
   uint64_t nTotalConnectionsDropped_;
 
   /// File descriptors for pipe used for task completion notification.
-  int notificationPipeFDs_[2];
+  evutil_socket_t notificationPipeFDs_[2];
 
   /**
    * This is a stack of all the objects that have been created but that
@@ -636,7 +636,7 @@ class TNonblockingServer : public TServer {
    * @param which the flags associated with the event.
    * @param v void* callback arg where we placed TNonblockingServer's "this".
    */
-  static void eventHandler(int fd, short which, void* v) {
+  static void eventHandler(evutil_socket_t fd, short which, void* v) {
     ((TNonblockingServer*)v)->handleEvent(fd, which);
   }
 
@@ -876,7 +876,7 @@ class TConnection {
    * @param which the flags associated with the event.
    * @param v void* callback arg where we placed TConnection's "this".
    */
-  static void eventHandler(int fd, short /* which */, void* v) {
+  static void eventHandler(evutil_socket_t fd, short /* which */, void* v) {
     assert(fd == ((TConnection*)v)->getTSocket()->getSocketFD());
     ((TConnection*)v)->workSocket();
   }
@@ -889,7 +889,7 @@ class TConnection {
    *
    * @param fd the descriptor the event occured on.
    */
-  static void taskHandler(int fd, short /* which */, void* /* v */) {
+  static void taskHandler(evutil_socket_t fd, short /* which */, void* /* v */) {
     TConnection* connection;
     ssize_t nBytes;
     while ((nBytes = recv(fd, (char*)&connection, sizeof(TConnection*), 0))
