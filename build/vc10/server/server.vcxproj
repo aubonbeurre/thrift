@@ -58,6 +58,9 @@
       <AdditionalDependencies>pthreadVC2.lib;libevent.lib;thriftnb.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(SolutionDir)/pthreadVC2;$(THIRD_PARTY)/libevent/libevent2.0.12/build/vc10/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)pthreadVC2\pthreadVC2.dll" "$(SolutionDir)$(Configuration)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -77,6 +80,9 @@
       <AdditionalDependencies>pthreadVC2.lib;libevent.lib;thriftnb.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(SolutionDir)/pthreadVC2;$(THIRD_PARTY)/libevent/libevent2.0.12/build/vc10/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)pthreadVC2\pthreadVC2.dll" "$(SolutionDir)$(Configuration)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\config.h" />

@@ -784,18 +784,21 @@ void TNonblockingServer::listenSocket(int s) {
   serverSocket_ = s;
 }
 
-void TNonblockingServer::createNotificationPipe() {
 #ifdef WIN32
-  if (_pipe(notificationPipeFDs_, 256, O_BINARY) != 0) {
+#define LOCAL_SOCKETPAIR_AF AF_INET
 #else
-  if (pipe(notificationPipeFDs_) != 0) {
+#define LOCAL_SOCKETPAIR_AF AF_UNIX
 #endif
+
+void TNonblockingServer::createNotificationPipe() {
+  if(evutil_socketpair(LOCAL_SOCKETPAIR_AF, SOCK_STREAM, 0,
+			notificationPipeFDs_) == -1) {
     GlobalOutput.perror("TNonblockingServer::createNotificationPipe ", errno);
       throw TException("can't create notification pipe");
   }
-  int flags;
-  if ((flags = fcntl(notificationPipeFDs_[0], F_GETFL, 0)) < 0 ||
-      fcntl(notificationPipeFDs_[0], F_SETFL, flags | O_NONBLOCK) < 0) {
+
+  if(evutil_make_socket_nonblocking(notificationPipeFDs_[0])<0 ||
+	  evutil_make_socket_nonblocking(notificationPipeFDs_[1])<0) {
     close(notificationPipeFDs_[0]);
     close(notificationPipeFDs_[1]);
     throw TException("TNonblockingServer::createNotificationPipe() O_NONBLOCK");
