@@ -21,8 +21,14 @@
 #define _THRIFT_TRANSPORT_TSOCKET_H_ 1
 
 #include <string>
+#ifndef WIN32
 #include <sys/time.h>
 #include <netdb.h>
+#else
+#include <WinSock2.h>
+#include <io.h>
+#include <ws2tcpip.h>
+#endif
 
 #include "TTransport.h"
 #include "TVirtualTransport.h"

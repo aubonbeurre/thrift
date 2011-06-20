@@ -30,7 +30,9 @@
 #include <string>
 #include <errno.h>
 #include <cstdlib>
+#ifndef WIN32
 #include <unistd.h>
+#endif
 #include <event.h>
 
 namespace apache { namespace thrift { namespace server {

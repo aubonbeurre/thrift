@@ -26,7 +26,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/static_assert.hpp>
 
+#ifndef WIN32
 #include <netinet/in.h>
+#endif
 #include <sys/types.h>
 #include <string>
 #include <map>
