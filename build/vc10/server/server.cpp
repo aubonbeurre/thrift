@@ -114,8 +114,6 @@ static void _log_cb(int severity, const char *msg) {
 	"WARN",
 	"ERROR"
 	};
-	//struct timeval tv;
-	//event_base_gettimeofday_cached(base, &tv);
 #ifdef _WIN32
 	int socket_errno = WSAGetLastError();
 #endif

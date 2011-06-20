@@ -37,7 +37,6 @@
 #include <ws2tcpip.h>
 #undef gai_strerror
 #define gai_strerror gai_strerrorA
-#define SHUT_RDWR SD_BOTH
 #endif
 
 #include <errno.h>
@@ -367,8 +366,13 @@ void TSocket::local_open(){
 
 void TSocket::close() {
   if (socket_ >= 0) {
+#ifdef WIN32
+    shutdown(socket_, SD_BOTH);
+    ::closesocket(socket_);
+#else
     shutdown(socket_, SHUT_RDWR);
     ::close(socket_);
+#endif
   }
   socket_ = -1;
 }

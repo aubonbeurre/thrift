@@ -892,7 +892,7 @@ class TConnection {
   static void taskHandler(int fd, short /* which */, void* /* v */) {
     TConnection* connection;
     ssize_t nBytes;
-    while ((nBytes = read(fd, (void*)&connection, sizeof(TConnection*)))
+    while ((nBytes = recv(fd, (char*)&connection, sizeof(TConnection*), 0))
         == sizeof(TConnection*)) {
       connection->transition();
     }
@@ -913,8 +913,8 @@ class TConnection {
    */
   bool notifyServer() {
     TConnection* connection = this;
-    if (write(server_->getNotificationSendFD(), (const void*)&connection,
-             sizeof(TConnection*)) != sizeof(TConnection*)) {
+    if (send(server_->getNotificationSendFD(), (const char*)&connection,
+             sizeof(TConnection*), 0) != sizeof(TConnection*)) {
       return false;
     }
 

@@ -8,6 +8,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "server\server.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thriftnb", "thriftnb\thriftnb.vcxproj", "{93DCC038-0172-4789-9BFA-864FE63807B1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\client.vcxproj", "{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +24,10 @@ Global
 		{93DCC038-0172-4789-9BFA-864FE63807B1}.Debug|Win32.Build.0 = Debug|Win32
 		{93DCC038-0172-4789-9BFA-864FE63807B1}.Release|Win32.ActiveCfg = Release|Win32
 		{93DCC038-0172-4789-9BFA-864FE63807B1}.Release|Win32.Build.0 = Release|Win32
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Debug|Win32.Build.0 = Debug|Win32
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Release|Win32.ActiveCfg = Release|Win32
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

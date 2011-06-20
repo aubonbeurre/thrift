@@ -793,7 +793,7 @@ void TNonblockingServer::listenSocket(int s) {
 void TNonblockingServer::createNotificationPipe() {
   if(evutil_socketpair(LOCAL_SOCKETPAIR_AF, SOCK_STREAM, 0,
 			notificationPipeFDs_) == -1) {
-    GlobalOutput.perror("TNonblockingServer::createNotificationPipe ", errno);
+    GlobalOutput.perror("TNonblockingServer::createNotificationPipe ", EVUTIL_SOCKET_ERROR());
       throw TException("can't create notification pipe");
   }
 
