@@ -5,14 +5,21 @@
 #define NOMINMAX
 
 #include <xstddef>
+#include <stdint.h>
+#include <time.h>
 
-extern char* ctime_r(const time_t*, char*);
-extern int fcntl(int, int, int);
+#define ctime_r( _clock, _buf ) \
+        ( strcpy( (_buf), ctime( (_clock) ) ),  \
+          (_buf) )
+
+#define O_NONBLOCK 1
+
 enum {
 	F_GETFL,
 	F_SETFL,
-	O_NONBLOCK,
 };
+
+extern int fcntl(int fd, int cmd, int flags);
 
 typedef  int         socklen_t;
 typedef  ptrdiff_t   ssize_t;
@@ -40,8 +47,6 @@ struct timezone
 };
 
 int gettimeofday(struct timeval * tv, struct timezone * tz);
-
-#include <stdint.h>
 
 //Answer: Works, but only on Windows 7 and Windows Server 2008 version od Winsocks2 DLL
 // see https://issues.apache.org/jira/browse/THRIFT-1123
