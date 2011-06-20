@@ -9,6 +9,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thriftnb", "thriftnb\thriftnb.vcxproj", "{93DCC038-0172-4789-9BFA-864FE63807B1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\client.vcxproj", "{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{93DCC038-0172-4789-9BFA-864FE63807B1} = {93DCC038-0172-4789-9BFA-864FE63807B1}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

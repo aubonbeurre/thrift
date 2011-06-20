@@ -85,7 +85,6 @@
     <ClInclude Include="..\gen-cpp\shared_types.h" />
     <ClInclude Include="..\gen-cpp\tutorial_constants.h" />
     <ClInclude Include="..\gen-cpp\tutorial_types.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\compat.cpp" />
