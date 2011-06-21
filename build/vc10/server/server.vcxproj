@@ -165,7 +165,6 @@
     <ClInclude Include="..\gen-cpp\tutorial_types.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\compat.cpp" />
     <ClCompile Include="..\gen-cpp\Calculator.cpp" />
     <ClCompile Include="..\gen-cpp\SharedService.cpp" />
     <ClCompile Include="..\gen-cpp\shared_constants.cpp" />

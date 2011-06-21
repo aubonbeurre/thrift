@@ -44,9 +44,6 @@
     <ClCompile Include="client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\compat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\gen-cpp\Calculator.cpp">
       <Filter>Source Files\gen-cpp</Filter>
     </ClCompile>

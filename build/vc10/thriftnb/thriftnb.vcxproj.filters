@@ -122,5 +122,8 @@
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Util.cpp">
       <Filter>Source Files\concurrency</Filter>
     </ClCompile>
+    <ClCompile Include="..\compat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

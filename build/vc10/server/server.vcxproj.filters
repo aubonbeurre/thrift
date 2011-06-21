@@ -62,8 +62,5 @@
     <ClCompile Include="..\gen-cpp\tutorial_types.cpp">
       <Filter>Source Files\gen-cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\compat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
