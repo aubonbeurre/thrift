@@ -3,6 +3,9 @@
 #pragma warning(disable: 4250) /* inherits via dominance */ 
 
 #define NOMINMAX
+#ifndef WIN32
+#define WIN32
+#endif
 
 #include <xstddef>
 #include <stdint.h>

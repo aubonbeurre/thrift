@@ -899,7 +899,7 @@ class TConnection {
     if (nBytes > 0) {
       throw TException("TConnection::taskHandler unexpected partial read");
     }
-    if (errno != EWOULDBLOCK && errno != EAGAIN) {
+    if (errno && errno != EWOULDBLOCK && errno != EAGAIN) {
       GlobalOutput.perror("TConnection::taskHandler read failed, resource leak", errno);
     }
   }
