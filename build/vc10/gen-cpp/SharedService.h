@@ -6,7 +6,13 @@
 #ifndef SharedService_H
 #define SharedService_H
 
+#include <tr1/functional>
+#include <transport/TTransportUtils.h>
+namespace apache { namespace thrift { namespace async {
+class TAsyncChannel;
+}}}
 #include <TProcessor.h>
+#include <async/TAsyncProcessor.h>
 #include "shared_types.h"
 
 namespace shared {
@@ -122,6 +128,7 @@ class SharedService_getStruct_presult {
   _SharedService_getStruct_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -196,6 +203,76 @@ class SharedServiceMultiface : virtual public SharedServiceIf {
     }
   }
 
+};
+
+class SharedServiceCobClient;
+
+class SharedServiceCobClIf {
+ public:
+  virtual ~SharedServiceCobClIf() {}
+  virtual void getStruct(std::tr1::function<void(SharedServiceCobClient* client)> cob, const int32_t key) = 0;
+};
+
+class SharedServiceCobSvIf {
+ public:
+  virtual ~SharedServiceCobSvIf() {}
+  virtual void getStruct(std::tr1::function<void(SharedStruct const& _return)> cob, const int32_t key) = 0;
+};
+
+class SharedServiceCobSvNull : virtual public SharedServiceCobSvIf {
+ public:
+  virtual ~SharedServiceCobSvNull() {}
+  void getStruct(std::tr1::function<void(SharedStruct const& _return)> cob, const int32_t /* key */) {
+    SharedStruct _return;
+    return cob(_return);
+  }
+};
+
+class SharedServiceCobClient : virtual public SharedServiceCobClIf {
+ public:
+  SharedServiceCobClient(boost::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel, ::apache::thrift::protocol::TProtocolFactory* protocolFactory) :
+    channel_(channel),
+    itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    piprot_(protocolFactory->getProtocol(itrans_)),
+    poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  boost::shared_ptr< ::apache::thrift::async::TAsyncChannel> getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool success) {}
+  void getStruct(std::tr1::function<void(SharedServiceCobClient* client)> cob, const int32_t key);
+  void send_getStruct(const int32_t key);
+  void recv_getStruct(SharedStruct& _return);
+ protected:
+  boost::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel_;
+  boost::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> itrans_;
+  boost::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> otrans_;
+  boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
+  boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol* iprot_;
+  ::apache::thrift::protocol::TProtocol* oprot_;
+};
+
+class SharedServiceAsyncProcessor : virtual public ::apache::thrift::TAsyncProcessor {
+ protected:
+  boost::shared_ptr<SharedServiceCobSvIf> iface_;
+  virtual void process_fn(std::tr1::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, std::string& fname, int32_t seqid);
+ private:
+  std::map<std::string, void (SharedServiceAsyncProcessor::*)(std::tr1::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*)> processMap_;
+  void process_getStruct(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_getStruct(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const SharedStruct& _return);
+  void throw_getStruct(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+ public:
+  SharedServiceAsyncProcessor(boost::shared_ptr<SharedServiceCobSvIf> iface) :
+    iface_(iface) {
+    processMap_["getStruct"] = &SharedServiceAsyncProcessor::process_getStruct;
+  }
+
+  virtual void process(std::tr1::function<void(bool ok)> cob, boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot);
+  virtual ~SharedServiceAsyncProcessor() {}
 };
 
 } // namespace

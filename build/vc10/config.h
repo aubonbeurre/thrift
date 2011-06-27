@@ -57,3 +57,5 @@ int gettimeofday(struct timeval * tv, struct timezone * tz);
         WSAPoll(poll_array, count, timeout)
 
 #define usleep(ms) Sleep(ms)
+
+#define VERSION "0.6.1"

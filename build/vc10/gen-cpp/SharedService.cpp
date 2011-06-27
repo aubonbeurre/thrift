@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
 #include "SharedService.h"
+#include "async/TAsyncChannel.h"
 
 namespace shared {
 
@@ -165,6 +166,17 @@ uint32_t SharedService_getStruct_presult::read(::apache::thrift::protocol::TProt
   return xfer;
 }
 
+uint32_t SharedService_getStruct_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("SharedService_getStruct_presult");
+  xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRUCT, 0);
+  xfer += (*(this->success)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
 void SharedServiceClient::getStruct(SharedStruct& _return, const int32_t key)
 {
   send_getStruct(key);
@@ -320,6 +332,187 @@ void SharedServiceProcessor::process_getStruct(int32_t seqid, ::apache::thrift::
   if (eventHandler_.get() != NULL) {
     eventHandler_->postWrite(ctx, "SharedService.getStruct", bytes);
   }
+}
+
+void SharedServiceCobClient::getStruct(std::tr1::function<void(SharedServiceCobClient* client)> cob, const int32_t key)
+{
+  send_getStruct(key);
+  channel_->sendAndRecvMessage(std::tr1::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void SharedServiceCobClient::send_getStruct(const int32_t key)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("getStruct", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  SharedService_getStruct_pargs args;
+  args.key = &key;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void SharedServiceCobClient::recv_getStruct(SharedStruct& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("getStruct") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    SharedService_getStruct_presult result;
+    result.success = &_return;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    if (result.__isset.success) {
+      // _return pointer has now been filled
+      completed = true;
+      completed__(true);
+      return;
+    }
+    completed = true;
+    completed__(true);
+    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "getStruct failed: unknown result");
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void SharedServiceAsyncProcessor::process(std::tr1::function<void(bool ok)> cob, boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot) {
+
+  ::apache::thrift::protocol::TProtocol* iprot = piprot.get();
+  ::apache::thrift::protocol::TProtocol* oprot = poprot.get();
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  int32_t seqid;
+
+  iprot->readMessageBegin(fname, mtype, seqid);
+
+  if (mtype != ::apache::thrift::protocol::T_CALL && mtype != ::apache::thrift::protocol::T_ONEWAY) {
+    iprot->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot->readMessageEnd();
+    iprot->getTransport()->readEnd();
+    ::apache::thrift::TApplicationException x(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
+    oprot->writeMessageBegin(fname, ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+
+  return process_fn(cob, iprot, oprot, fname, seqid);
+}
+
+void SharedServiceAsyncProcessor::process_fn(std::tr1::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, std::string& fname, int32_t seqid) {
+  std::map<std::string, void (SharedServiceAsyncProcessor::*)(std::tr1::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*)>::iterator pfn;
+  pfn = processMap_.find(fname);
+  if (pfn == processMap_.end()) {
+    iprot->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot->readMessageEnd();
+    iprot->getTransport()->readEnd();
+    ::apache::thrift::TApplicationException x(::apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+fname+"'");
+    oprot->writeMessageBegin(fname, ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  (this->*(pfn->second))(cob, seqid, iprot, oprot);
+  return;
+}
+
+void SharedServiceAsyncProcessor::process_getStruct(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  SharedService_getStruct_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("SharedService.getStruct", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "SharedService.getStruct");
+
+  try {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->preRead(ctx, "SharedService.getStruct");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->postRead(ctx, "SharedService.getStruct", bytes);
+    }
+  }
+  catch (const std::exception& exn) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "SharedService.getStruct");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (SharedServiceAsyncProcessor::*return_fn)(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const SharedStruct& _return) =
+    &SharedServiceAsyncProcessor::return_getStruct;
+  iface_->getStruct(
+      std::tr1::bind(return_fn, this, cob, seqid, oprot, ctx, std::tr1::placeholders::_1),
+      args.key);
+}
+
+void SharedServiceAsyncProcessor::return_getStruct(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const SharedStruct& _return)
+{
+  SharedService_getStruct_presult result;
+  result.success = const_cast<SharedStruct*>(&_return);
+  result.__isset.success = true;
+
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("SharedService.getStruct", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "SharedService.getStruct");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "SharedService.getStruct");
+  }
+
+  oprot->writeMessageBegin("getStruct", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "SharedService.getStruct", bytes);
+  }
+  return cob(true);
 }
 
 } // namespace

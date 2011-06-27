@@ -12,8 +12,8 @@ const tutorialConstants g_tutorial_constants;
 tutorialConstants::tutorialConstants() {
   INT32CONSTANT = 9853;
 
-  MAPCONSTANT.insert(std::make_pair("hello", "world"));
   MAPCONSTANT.insert(std::make_pair("goodnight", "moon"));
+  MAPCONSTANT.insert(std::make_pair("hello", "world"));
 
 }
 

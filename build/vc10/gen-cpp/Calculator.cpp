@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  */
 #include "Calculator.h"
+#include "async/TAsyncChannel.h"
 
 namespace tutorial {
 
@@ -127,6 +128,14 @@ uint32_t Calculator_ping_presult::read(::apache::thrift::protocol::TProtocol* ip
 
   xfer += iprot->readStructEnd();
 
+  return xfer;
+}
+
+uint32_t Calculator_ping_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Calculator_ping_presult");
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
   return xfer;
 }
 
@@ -299,6 +308,17 @@ uint32_t Calculator_add_presult::read(::apache::thrift::protocol::TProtocol* ipr
 
   xfer += iprot->readStructEnd();
 
+  return xfer;
+}
+
+uint32_t Calculator_add_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Calculator_add_presult");
+  xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I32, 0);
+  xfer += oprot->writeI32((*(this->success)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
   return xfer;
 }
 
@@ -491,6 +511,20 @@ uint32_t Calculator_calculate_presult::read(::apache::thrift::protocol::TProtoco
 
   xfer += iprot->readStructEnd();
 
+  return xfer;
+}
+
+uint32_t Calculator_calculate_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Calculator_calculate_presult");
+  xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I32, 0);
+  xfer += oprot->writeI32((*(this->success)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("ouch", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += this->ouch.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
   return xfer;
 }
 
@@ -968,6 +1002,536 @@ void CalculatorProcessor::process_zip(int32_t seqid, ::apache::thrift::protocol:
   }
 
   return;
+}
+
+void CalculatorCobClient::ping(std::tr1::function<void(CalculatorCobClient* client)> cob)
+{
+  send_ping();
+  channel_->sendAndRecvMessage(std::tr1::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void CalculatorCobClient::send_ping()
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("ping", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Calculator_ping_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CalculatorCobClient::recv_ping()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("ping") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    Calculator_ping_presult result;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    completed = true;
+    completed__(true);
+    return;
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void CalculatorCobClient::add(std::tr1::function<void(CalculatorCobClient* client)> cob, const int32_t num1, const int32_t num2)
+{
+  send_add(num1, num2);
+  channel_->sendAndRecvMessage(std::tr1::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void CalculatorCobClient::send_add(const int32_t num1, const int32_t num2)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("add", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Calculator_add_pargs args;
+  args.num1 = &num1;
+  args.num2 = &num2;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+int32_t CalculatorCobClient::recv_add()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("add") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    int32_t _return;
+    Calculator_add_presult result;
+    result.success = &_return;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    if (result.__isset.success) {
+      completed = true;
+      completed__(true);
+      return _return;
+    }
+    completed = true;
+    completed__(true);
+    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "add failed: unknown result");
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void CalculatorCobClient::calculate(std::tr1::function<void(CalculatorCobClient* client)> cob, const int32_t logid, const Work& w)
+{
+  send_calculate(logid, w);
+  channel_->sendAndRecvMessage(std::tr1::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void CalculatorCobClient::send_calculate(const int32_t logid, const Work& w)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("calculate", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Calculator_calculate_pargs args;
+  args.logid = &logid;
+  args.w = &w;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+int32_t CalculatorCobClient::recv_calculate()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("calculate") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    int32_t _return;
+    Calculator_calculate_presult result;
+    result.success = &_return;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    if (result.__isset.success) {
+      completed = true;
+      completed__(true);
+      return _return;
+    }
+    if (result.__isset.ouch) {
+      completed = true;
+      completed__(true);
+      throw result.ouch;
+    }
+    completed = true;
+    completed__(true);
+    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "calculate failed: unknown result");
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void CalculatorCobClient::zip(std::tr1::function<void(CalculatorCobClient* client)> cob)
+{
+  send_zip();
+  channel_->sendMessage(std::tr1::bind(cob, this), otrans_.get());
+}
+
+void CalculatorCobClient::send_zip()
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("zip", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Calculator_zip_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CalculatorAsyncProcessor::process(std::tr1::function<void(bool ok)> cob, boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot) {
+
+  ::apache::thrift::protocol::TProtocol* iprot = piprot.get();
+  ::apache::thrift::protocol::TProtocol* oprot = poprot.get();
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  int32_t seqid;
+
+  iprot->readMessageBegin(fname, mtype, seqid);
+
+  if (mtype != ::apache::thrift::protocol::T_CALL && mtype != ::apache::thrift::protocol::T_ONEWAY) {
+    iprot->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot->readMessageEnd();
+    iprot->getTransport()->readEnd();
+    ::apache::thrift::TApplicationException x(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
+    oprot->writeMessageBegin(fname, ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+
+  return process_fn(cob, iprot, oprot, fname, seqid);
+}
+
+void CalculatorAsyncProcessor::process_fn(std::tr1::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, std::string& fname, int32_t seqid) {
+  std::map<std::string, void (CalculatorAsyncProcessor::*)(std::tr1::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*)>::iterator pfn;
+  pfn = processMap_.find(fname);
+  if (pfn == processMap_.end()) {
+    return shared::SharedServiceAsyncProcessor::process_fn(cob, iprot, oprot, fname, seqid);
+  }
+  (this->*(pfn->second))(cob, seqid, iprot, oprot);
+  return;
+}
+
+void CalculatorAsyncProcessor::process_ping(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  Calculator_ping_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Calculator.ping", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Calculator.ping");
+
+  try {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->preRead(ctx, "Calculator.ping");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->postRead(ctx, "Calculator.ping", bytes);
+    }
+  }
+  catch (const std::exception& exn) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Calculator.ping");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (CalculatorAsyncProcessor::*return_fn)(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx) =
+    &CalculatorAsyncProcessor::return_ping;
+  iface_->ping(
+      std::tr1::bind(return_fn, this, cob, seqid, oprot, ctx));
+}
+
+void CalculatorAsyncProcessor::return_ping(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx)
+{
+  Calculator_ping_presult result;
+
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Calculator.ping", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Calculator.ping");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Calculator.ping");
+  }
+
+  oprot->writeMessageBegin("ping", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Calculator.ping", bytes);
+  }
+  return cob(true);
+}
+
+void CalculatorAsyncProcessor::process_add(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  Calculator_add_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Calculator.add", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Calculator.add");
+
+  try {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->preRead(ctx, "Calculator.add");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->postRead(ctx, "Calculator.add", bytes);
+    }
+  }
+  catch (const std::exception& exn) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Calculator.add");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (CalculatorAsyncProcessor::*return_fn)(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const int32_t& _return) =
+    &CalculatorAsyncProcessor::return_add;
+  iface_->add(
+      std::tr1::bind(return_fn, this, cob, seqid, oprot, ctx, std::tr1::placeholders::_1),
+      args.num1,
+      args.num2);
+}
+
+void CalculatorAsyncProcessor::return_add(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const int32_t& _return)
+{
+  Calculator_add_presult result;
+  result.success = const_cast<int32_t*>(&_return);
+  result.__isset.success = true;
+
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Calculator.add", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Calculator.add");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Calculator.add");
+  }
+
+  oprot->writeMessageBegin("add", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Calculator.add", bytes);
+  }
+  return cob(true);
+}
+
+void CalculatorAsyncProcessor::process_calculate(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  Calculator_calculate_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Calculator.calculate", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Calculator.calculate");
+
+  try {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->preRead(ctx, "Calculator.calculate");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->postRead(ctx, "Calculator.calculate", bytes);
+    }
+  }
+  catch (const std::exception& exn) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Calculator.calculate");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (CalculatorAsyncProcessor::*return_fn)(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const int32_t& _return) =
+    &CalculatorAsyncProcessor::return_calculate;
+  void (CalculatorAsyncProcessor::*throw_fn)(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw) =
+    &CalculatorAsyncProcessor::throw_calculate;
+  iface_->calculate(
+      std::tr1::bind(return_fn, this, cob, seqid, oprot, ctx, std::tr1::placeholders::_1),
+      std::tr1::bind(throw_fn, this, cob, seqid, oprot, ctx, std::tr1::placeholders::_1),
+      args.logid,
+      args.w);
+}
+
+void CalculatorAsyncProcessor::return_calculate(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const int32_t& _return)
+{
+  Calculator_calculate_presult result;
+  result.success = const_cast<int32_t*>(&_return);
+  result.__isset.success = true;
+
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Calculator.calculate", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Calculator.calculate");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Calculator.calculate");
+  }
+
+  oprot->writeMessageBegin("calculate", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Calculator.calculate", bytes);
+  }
+  return cob(true);
+}
+
+void CalculatorAsyncProcessor::throw_calculate(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw)
+{
+  Calculator_calculate_result result;
+
+  try {
+    _throw->throw_it();
+    return cob(false);
+  }  catch (InvalidOperation &ouch) {
+    result.ouch = ouch;
+    result.__isset.ouch = true;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Calculator.calculate", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Calculator.calculate");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Calculator.calculate");
+  }
+
+  oprot->writeMessageBegin("calculate", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Calculator.calculate", bytes);
+  }
+  return cob(true);
+}
+
+void CalculatorAsyncProcessor::process_zip(std::tr1::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  Calculator_zip_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Calculator.zip", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Calculator.zip");
+
+  try {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->preRead(ctx, "Calculator.zip");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->postRead(ctx, "Calculator.zip", bytes);
+    }
+  }
+  catch (const std::exception& exn) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Calculator.zip");
+    }
+    return cob(false);
+  }
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->asyncComplete(ctx, "Calculator.zip");
+  }
+  freer.unregister();
+  iface_->zip(std::tr1::bind(cob, true)
+);
 }
 
 } // namespace

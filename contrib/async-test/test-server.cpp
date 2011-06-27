@@ -53,7 +53,7 @@ class AggrAsyncHandler : public AggrCobSvIf {
             "localhost", "/", "127.0.0.1", *it, eb_));
       AggrCobClient* client = new AggrCobClient(channel, pfact_.get());
       client->getValues(std::tr1::bind(&AggrAsyncHandler::clientReturn, this, ctx, _1));
-    }
+	}
   }
 
   void setEventBase(struct event_base* eb) {

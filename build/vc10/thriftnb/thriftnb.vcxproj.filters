@@ -81,6 +81,15 @@
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Util.h">
       <Filter>Source Files\concurrency</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TSocket.h">
+      <Filter>Source Files\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\async\TEvhttpClientChannel.h">
+      <Filter>Source Files\async</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\async\TEvhttpServer.h">
+      <Filter>Source Files\async</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\lib\cpp\src\async\TAsyncChannel.cpp">
@@ -124,6 +133,12 @@
     </ClCompile>
     <ClCompile Include="..\compat.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\async\TEvhttpServer.cpp">
+      <Filter>Source Files\async</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\async\TEvhttpClientChannel.cpp">
+      <Filter>Source Files\async</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
