@@ -98,7 +98,11 @@ TEvhttpServer::RequestContext::RequestContext(struct evhttp_request* req) : req(
 
 
 void TEvhttpServer::request(struct evhttp_request* req, void* self) {
-  static_cast<TEvhttpServer*>(self)->process(req);
+  try {
+    static_cast<TEvhttpServer*>(self)->process(req);
+  } catch(std::exception& e) {
+	evhttp_send_reply(req, HTTP_INTERNAL, e.what(), 0);
+  }
 }
 
 

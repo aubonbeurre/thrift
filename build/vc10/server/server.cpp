@@ -252,7 +252,7 @@ int main(int argc, char **argv)
 		boost::shared_ptr<TAsyncBufferProcessor> bufproc(new TAsyncProtocolProcessor(proc, pfact));
 		boost::shared_ptr<TEvhttpServer> server(new TEvhttpServer(bufproc, 8080));
 
-		printf("Starting the HTTP server...\n");
+		printf("Starting the HTTP server port %d...\n", 8080);
 		server->serve();
 		printf("done.\n");
 	} else {
