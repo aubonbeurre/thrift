@@ -300,7 +300,7 @@ class PosixThreadFactory::Impl {
      return (Thread::id_t)pthread_self();
 #else
     return (Thread::id_t)pthread_self().p;
-#endif _WIN32
+#endif
   }
 
 };
