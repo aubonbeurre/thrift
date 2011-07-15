@@ -19,6 +19,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
+#include <tr1/functional>
 
 #include "../gen-cpp/Calculator.h"
 
@@ -31,6 +32,8 @@ using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
+
+using std::tr1::placeholders::_1;
 
 using namespace tutorial;
 using namespace shared;
@@ -49,15 +52,53 @@ static void _log_cb(int severity, const char *msg) {
 	std::cout << sev[severity] << ": " << msg << std::endl;
 }
 
-static void CalculatorAsyncHandler_clientReturn(CalculatorCobClient* client) {
-	cout << "ping" << std::endl;
+static CalculatorCobClient* new_client(TProtocolFactory* protocolFactory) {
+	boost::shared_ptr<TAsyncChannel> channel(
+		new TEvhttpClientChannel("localhost", "/", "127.0.0.1", 8080, base));
 
+	return new CalculatorCobClient(channel, protocolFactory);
+}
+
+static void CalculatorAsyncHandler_calculate1(TProtocolFactory* protocolFactory, CalculatorCobClient* client) {
+	try {
+		int32_t quotient = client->recv_calculate();
+		printf("Whoa? We can divide by zero!\n");
+	} catch (InvalidOperation &io) {
+		printf("InvalidOperation: %s\n", io.why.c_str());
+	} 
+
+	delete client;
 	event_base_loopbreak(base);
+}
+
+static void CalculatorAsyncHandler_addReturn(TProtocolFactory* protocolFactory, CalculatorCobClient* client) {
+	int sum = client->recv_add();
+	printf("1+1=%d\n", sum);
+
+	delete client;
+	client = new_client(protocolFactory);
+
+	Work work;
+	work.op = Operation::DIVIDE;
+	work.num1 = 1;
+	work.num2 = 0;
+
+	client->calculate(tr1::bind(CalculatorAsyncHandler_calculate1, protocolFactory, _1), 1, work);
+}
+
+static void CalculatorAsyncHandler_pingReturn(TProtocolFactory* protocolFactory, CalculatorCobClient* client) {
+ 	client->recv_ping();
+	printf("ping()\n");
+
+	delete client;
+	client = new_client(protocolFactory);
+
+	client->add(tr1::bind(CalculatorAsyncHandler_addReturn, protocolFactory, _1), 1, 1);
 }
 
 int main(int argc, char **argv)
 {
-	event_config *conf = event_config_new();
+ 	event_config *conf = event_config_new();
 
 #ifdef WIN32
 	WORD wVersionRequested;
@@ -95,12 +136,9 @@ int main(int argc, char **argv)
 
 	boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
 
-	if(argc >= 2 && strcmp(argv[1], "http") == 0) {
-		boost::shared_ptr<TAsyncChannel> channel(
-			new TEvhttpClientChannel("localhost", "/", "127.0.0.1", 8080, base));
-
-		CalculatorCobClient* client = new CalculatorCobClient(channel, protocolFactory.get());
-		client->ping(CalculatorAsyncHandler_clientReturn);
+	if(argc >= 2 && strcmp(argv[1], "http") ==  0) {
+		CalculatorCobClient* client = new_client(protocolFactory.get());
+		client->ping(tr1::bind(CalculatorAsyncHandler_pingReturn, protocolFactory.get(), _1));
 
 		event_base_loop(base, 0);
 	} else {
