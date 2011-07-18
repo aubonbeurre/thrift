@@ -27,7 +27,9 @@
 #include <assert.h>
 
 #include <sys/types.h>
+#ifndef WIN32
 #include <netinet/in.h>
+#endif
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
 #endif

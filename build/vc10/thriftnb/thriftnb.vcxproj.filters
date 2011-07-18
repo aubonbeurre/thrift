@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\async">
+      <UniqueIdentifier>{e96536d4-4bf9-4e52-bcb9-e88cd6846e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\server">
+      <UniqueIdentifier>{9c14a2e8-a64f-4659-a26b-431d680db1c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\transport">
+      <UniqueIdentifier>{190bacf4-229b-406f-ad19-ccd3b610cc2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\concurrency">
+      <UniqueIdentifier>{91c8381e-71ec-4715-92e3-ec9725a7f3e0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\lib\cpp\src\async\TAsyncBufferProcessor.h">
+      <Filter>Source Files\async</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\async\TAsyncProtocolProcessor.h">
+      <Filter>Source Files\async</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\async\TAsyncChannel.h">
+      <Filter>Source Files\async</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\async\TAsyncProcessor.h">
+      <Filter>Source Files\async</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\server\TNonblockingServer.h">
+      <Filter>Source Files\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\TApplicationException.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\Thrift.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\TLogging.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\TProcessor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\TReflectionLocal.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TBufferTransports.h">
+      <Filter>Source Files\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\concurrency\ThreadManager.h">
+      <Filter>Source Files\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Monitor.h">
+      <Filter>Source Files\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Mutex.h">
+      <Filter>Source Files\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\concurrency\PosixThreadFactory.h">
+      <Filter>Source Files\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Util.h">
+      <Filter>Source Files\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TSocket.h">
+      <Filter>Source Files\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\async\TEvhttpClientChannel.h">
+      <Filter>Source Files\async</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\async\TEvhttpServer.h">
+      <Filter>Source Files\async</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\lib\cpp\src\async\TAsyncChannel.cpp">
+      <Filter>Source Files\async</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\async\TAsyncProtocolProcessor.cpp">
+      <Filter>Source Files\async</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\server\TNonblockingServer.cpp">
+      <Filter>Source Files\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\TApplicationException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\Thrift.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\transport\TSocket.cpp">
+      <Filter>Source Files\transport</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\transport\TBufferTransports.cpp">
+      <Filter>Source Files\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\ThreadManager.cpp">
+      <Filter>Source Files\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Monitor.cpp">
+      <Filter>Source Files\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Mutex.cpp">
+      <Filter>Source Files\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\PosixThreadFactory.cpp">
+      <Filter>Source Files\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Util.cpp">
+      <Filter>Source Files\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\compat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\async\TEvhttpServer.cpp">
+      <Filter>Source Files\async</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\async\TEvhttpClientChannel.cpp">
+      <Filter>Source Files\async</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

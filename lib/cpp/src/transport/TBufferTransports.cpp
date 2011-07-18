@@ -22,6 +22,10 @@
 
 #include <transport/TBufferTransports.h>
 
+#ifdef WIN32
+#include <WinSock2.h>
+#endif
+
 using std::string;
 
 namespace apache { namespace thrift { namespace transport {
