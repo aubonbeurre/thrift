@@ -22,6 +22,8 @@
 #include <transport/TSocket.h>
 
 #include <iostream>
+#include <errno.h>
+
 #ifndef WIN32
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -33,9 +35,27 @@
 #include <ws2tcpip.h>
 #undef gai_strerror
 #define gai_strerror gai_strerrorA
+#undef errno
+#undef EINTR
+#undef EINPROGRESS
+#undef ECONNRESET
+#undef ENOTCONN
+#undef ETIMEDOUT
+#undef EWOULDBLOCK
+#undef EAGAIN
+#undef EPIPE
+#define errno ::WSAGetLastError()
+#define EINPROGRESS WSAEINPROGRESS
+#define EAGAIN WSAEWOULDBLOCK
+#define EINTR WSAEINTR
+#define ECONNRESET WSAECONNRESET
+#define ENOTCONN WSAENOTCONN
+#define ETIMEDOUT WSAETIMEDOUT
+#define EWOULDBLOCK WSAEWOULDBLOCK
+#define EPIPE WSAECONNRESET
 #endif
+
 #include <fcntl.h>
-#include <errno.h>
 #include <assert.h>
 
 #ifndef AF_LOCAL

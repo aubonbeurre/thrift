@@ -21,6 +21,7 @@
 #include <cstring>
 #include <sstream>
 #include <sys/types.h>
+#include <errno.h>
 
 #ifndef WIN32
 #include <sys/socket.h>
@@ -37,9 +38,26 @@
 #include <ws2tcpip.h>
 #undef gai_strerror
 #define gai_strerror gai_strerrorA
+#undef errno
+#undef EINTR
+#undef EINPROGRESS
+#undef ECONNRESET
+#undef ENOTCONN
+#undef ETIMEDOUT
+#undef EWOULDBLOCK
+#undef EAGAIN
+#undef EPIPE
+#define errno ::WSAGetLastError()
+#define EINPROGRESS WSAEINPROGRESS
+#define EAGAIN WSAEWOULDBLOCK
+#define EINTR WSAEINTR
+#define ECONNRESET WSAECONNRESET
+#define ENOTCONN WSAENOTCONN
+#define ETIMEDOUT WSAETIMEDOUT
+#define EWOULDBLOCK WSAEWOULDBLOCK
+#define EPIPE WSAECONNRESET
 #endif
 
-#include <errno.h>
 #include <fcntl.h>
 
 #include "concurrency/Monitor.h"
@@ -460,6 +478,12 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
       return 0;
     }
     #endif
+
+#ifdef WIN32
+	if(errno_copy == WSAECONNRESET) {
+		return 0; // EOF
+	}
+#endif
 
     // Now it's not a try again case, but a real probblez
     GlobalOutput.perror("TSocket::read() recv() " + getSocketInfo(), errno_copy);

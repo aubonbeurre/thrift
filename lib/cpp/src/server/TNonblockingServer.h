@@ -899,9 +899,15 @@ class TConnection {
     if (nBytes > 0) {
       throw TException("TConnection::taskHandler unexpected partial read");
     }
+#ifdef WIN32
+    int err = ::WSAGetLastError();
+    if(err && err != WSAEWOULDBLOCK)
+      GlobalOutput.perror("TConnection::taskHandler read failed, resource leak", err);
+#else
     if (errno && errno != EWOULDBLOCK && errno != EAGAIN) {
       GlobalOutput.perror("TConnection::taskHandler read failed, resource leak", errno);
     }
+#endif
   }
 
   /**
