@@ -1,0 +1,93 @@
+Apache Thrift non-blocking for Windows (using libevent)
+
+Last Modified: 2011-Jun-11
+
+This file on: https://github.com/aubonbeurre/thrift/blob/alex-0.6.1/README.non.blocking.Windows
+
+License
+=======
+See README
+
+References
+==========
+
+https://issues.apache.org/jira/browse/THRIFT-923
+https://issues.apache.org/jira/browse/THRIFT-1123
+https://issues.apache.org/jira/browse/THRIFT-1031
+https://issues.apache.org/jira/browse/THRIFT-591
+
+Introduction
+============
+
+This is an attempt to port the THRIT-923 "Event-driven client and server support for C++"
+to Windows.
+
+You will need to sync/compile it:
+
+- a github account
+- clone https://github.com/aubonbeurre/Libevent (branch https://github.com/aubonbeurre/Libevent/tree/alex-2.0.12):
+
+git clone https://aubonbeurre@github.com/aubonbeurre/Libevent.git libevent
+cd libevent
+git checkout alex-2.0.12
+
+- clone https://github.com/aubonbeurre/thrift (branch https://github.com/aubonbeurre/thrift/tree/alex-0.6.1)
+
+git clone https://aubonbeurre@github.com/aubonbeurre/thrift.git thrift
+cd thrift
+git checkout alex-0.6.1
+
+- download boost 1.44 (http://boost.org)
+- define THIRD_PARTY environment variable (see THRIFT-1031 for a full explanation), so that:
+
+$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1
+$(THIRD_PARTY)/boost/boost_1_44_0
+$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code
+$(THIRD_PARTY)/libevent/libevent2.0.12/include
+$(THIRD_PARTY)/libevent/libevent2.0.12/compat
+$(THIRD_PARTY)/libevent/libevent2.0.12
+
+- open libevent\build\vc10\libevent.sln and build (32b and 64b available)
+- open thrift\build\vc10\thrift.sln and build (32b and 64b available)
+
+- run/debug server inside thrift.sln
+- run/debug client inside thrift.sln
+
+Issues
+======
+
+This port is using (part of) the THRIFT-1123 THRIFT-1031 THRIFT-591 patches.
+
+Only Visual C++ 10 projects are available (32 and 64)
+
+The others dependencies are:
+
+- pthread for win32 (http://sources.redhat.com/pthreads-win32/). The .dll and .h are already included
+in thrift\build\vc10\pthread*
+- Boost 1.44 (http://boost.org)
+
+The changes are ONLY about porting the async (libevent) part (lib\cpp\src\async) to Windows.
+
+libevent changes
+================
+
+Changes inside libevent are only related to creating vc10 project and solution for Windows.
+
+git clone https://aubonbeurre@github.com/aubonbeurre/Libevent.git libevent
+cd libevent
+git checkout alex-2.0.12
+git diff master
+
+Thrift changes
+==============
+
+Changes inside Thrift are related to create vc10 projects, and also compiling for Windows:
+
+git clone https://aubonbeurre@github.com/aubonbeurre/thrift.git thrift
+cd thrift
+git checkout alex-0.6.1
+git diff thrift-0.6.1
+
+See THRIFT-1123 THRIFT-1031 THRIFT-591.
+
+alex <aubonbeurre@gmail.com>

@@ -17,17 +17,21 @@
  * under the License.
  */
 
-#include "Util.h"
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+#include "Util.h"
+
 #if defined(HAVE_CLOCK_GETTIME)
 #include <time.h>
-#elif defined(HAVE_GETTIMEOFDAY)
-#include <sys/time.h>
 #endif // defined(HAVE_CLOCK_GETTIME)
+
+#ifndef WIN32
+#include <sys/time.h>
+#else
+#include <WinSock2.h>
+#endif
 
 namespace apache { namespace thrift { namespace concurrency {
 

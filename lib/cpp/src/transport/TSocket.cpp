@@ -20,16 +20,44 @@
 #include <config.h>
 #include <cstring>
 #include <sstream>
+#include <sys/types.h>
+#include <errno.h>
+
+#ifndef WIN32
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/poll.h>
-#include <sys/types.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
 #include <unistd.h>
-#include <errno.h>
+#else
+#include <WinSock2.h>
+#include <io.h>
+#include <ws2tcpip.h>
+#undef gai_strerror
+#define gai_strerror gai_strerrorA
+#undef errno
+#undef EINTR
+#undef EINPROGRESS
+#undef ECONNRESET
+#undef ENOTCONN
+#undef ETIMEDOUT
+#undef EWOULDBLOCK
+#undef EAGAIN
+#undef EPIPE
+#define errno ::WSAGetLastError()
+#define EINPROGRESS WSAEINPROGRESS
+#define EAGAIN WSAEWOULDBLOCK
+#define EINTR WSAEINTR
+#define ECONNRESET WSAECONNRESET
+#define ENOTCONN WSAENOTCONN
+#define ETIMEDOUT WSAETIMEDOUT
+#define EWOULDBLOCK WSAEWOULDBLOCK
+#define EPIPE WSAECONNRESET
+#endif
+
 #include <fcntl.h>
 
 #include "concurrency/Monitor.h"
@@ -128,7 +156,7 @@ bool TSocket::peek() {
     return false;
   }
   uint8_t buf;
-  int r = recv(socket_, &buf, 1, MSG_PEEK);
+  int r = recv(socket_, (char*)&buf, 1, MSG_PEEK);
   if (r == -1) {
     int errno_copy = errno;
     #if defined __FreeBSD__ || defined __MACH__
@@ -209,6 +237,7 @@ void TSocket::openConnection(struct addrinfo *res) {
   // Connect the socket
   int ret;
   if (! path_.empty()) {
+#ifndef WIN32
     struct sockaddr_un address;
     socklen_t len;
 
@@ -222,6 +251,10 @@ void TSocket::openConnection(struct addrinfo *res) {
     snprintf(address.sun_path, sizeof(address.sun_path), "%s", path_.c_str());
     len = sizeof(address);
     ret = connect(socket_, (struct sockaddr *) &address, len);
+#else
+      GlobalOutput.perror("TSocket::open() Unix Domain socket path not supported on windows", -99);
+      throw TTransportException(TTransportException::NOT_OPEN, " Unix Domain socket path not supported");
+#endif
   } else {
     ret = connect(socket_, res->ai_addr, res->ai_addrlen);
   }
@@ -249,7 +282,7 @@ void TSocket::openConnection(struct addrinfo *res) {
     int val;
     socklen_t lon;
     lon = sizeof(int);
-    int ret2 = getsockopt(socket_, SOL_SOCKET, SO_ERROR, (void *)&val, &lon);
+    int ret2 = getsockopt(socket_, SOL_SOCKET, SO_ERROR, (char *)&val, &lon);
     if (ret2 == -1) {
       int errno_copy = errno;
       GlobalOutput.perror("TSocket::open() getsockopt() " + getSocketInfo(), errno_copy);
@@ -353,8 +386,13 @@ void TSocket::local_open(){
 
 void TSocket::close() {
   if (socket_ >= 0) {
+#ifdef WIN32
+    shutdown(socket_, SD_BOTH);
+    ::closesocket(socket_);
+#else
     shutdown(socket_, SHUT_RDWR);
     ::close(socket_);
+#endif
   }
   socket_ = -1;
 }
@@ -395,7 +433,7 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
     // an EAGAIN is due to a timeout or an out-of-resource condition.
     begin.tv_sec = begin.tv_usec = 0;
   }
-  int got = recv(socket_, buf, len, 0);
+  int got = recv(socket_, (char*)buf, len, 0);
   int errno_copy = errno; //gettimeofday can change errno
   ++g_socket_syscalls;
 
@@ -442,6 +480,12 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
       return 0;
     }
     #endif
+
+#ifdef WIN32
+	if(errno_copy == WSAECONNRESET) {
+		return 0; // EOF
+	}
+#endif
 
     // Now it's not a try again case, but a real probblez
     GlobalOutput.perror("TSocket::read() recv() " + getSocketInfo(), errno_copy);
@@ -504,7 +548,7 @@ uint32_t TSocket::write_partial(const uint8_t* buf, uint32_t len) {
   flags |= MSG_NOSIGNAL;
 #endif // ifdef MSG_NOSIGNAL
 
-  int b = send(socket_, buf + sent, len - sent, flags);
+  int b = send(socket_, (char*)(buf + sent), len - sent, flags);
   ++g_socket_syscalls;
 
   if (b < 0) {
@@ -554,7 +598,7 @@ void TSocket::setLinger(bool on, int linger) {
   }
 
   struct linger l = {(lingerOn_ ? 1 : 0), lingerVal_};
-  int ret = setsockopt(socket_, SOL_SOCKET, SO_LINGER, &l, sizeof(l));
+  int ret = setsockopt(socket_, SOL_SOCKET, SO_LINGER, (char*)&l, sizeof(l));
   if (ret == -1) {
     int errno_copy = errno;  // Copy errno because we're allocating memory.
     GlobalOutput.perror("TSocket::setLinger() setsockopt() " + getSocketInfo(), errno_copy);
@@ -569,7 +613,7 @@ void TSocket::setNoDelay(bool noDelay) {
 
   // Set socket to NODELAY
   int v = noDelay_ ? 1 : 0;
-  int ret = setsockopt(socket_, IPPROTO_TCP, TCP_NODELAY, &v, sizeof(v));
+  int ret = setsockopt(socket_, IPPROTO_TCP, TCP_NODELAY, (char*)&v, sizeof(v));
   if (ret == -1) {
     int errno_copy = errno;  // Copy errno because we're allocating memory.
     GlobalOutput.perror("TSocket::setNoDelay() setsockopt() " + getSocketInfo(), errno_copy);
@@ -598,7 +642,7 @@ void TSocket::setRecvTimeout(int ms) {
 
   // Copy because poll may modify
   struct timeval r = recvTimeval_;
-  int ret = setsockopt(socket_, SOL_SOCKET, SO_RCVTIMEO, &r, sizeof(r));
+  int ret = setsockopt(socket_, SOL_SOCKET, SO_RCVTIMEO, (char*)&r, sizeof(r));
   if (ret == -1) {
     int errno_copy = errno;  // Copy errno because we're allocating memory.
     GlobalOutput.perror("TSocket::setRecvTimeout() setsockopt() " + getSocketInfo(), errno_copy);
@@ -620,7 +664,7 @@ void TSocket::setSendTimeout(int ms) {
 
   struct timeval s = {(int)(sendTimeout_/1000),
                       (int)((sendTimeout_%1000)*1000)};
-  int ret = setsockopt(socket_, SOL_SOCKET, SO_SNDTIMEO, &s, sizeof(s));
+  int ret = setsockopt(socket_, SOL_SOCKET, SO_SNDTIMEO, (char*)&s, sizeof(s));
   if (ret == -1) {
     int errno_copy = errno;  // Copy errno because we're allocating memory.
     GlobalOutput.perror("TSocket::setSendTimeout() setsockopt() " + getSocketInfo(), errno_copy);
