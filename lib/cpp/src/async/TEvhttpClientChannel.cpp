@@ -86,8 +86,6 @@ void TEvhttpClientChannel::sendAndRecvMessage(
   if (rv != 0) {
     abort(); // XXX
   }
-
-  return true;
 }
 
 
