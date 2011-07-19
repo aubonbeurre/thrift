@@ -1,6 +1,9 @@
 #pragma once
 #pragma warning(disable: 4996) /* The POSIX name for this item is deprecated */ 
 #pragma warning(disable: 4250) /* inherits via dominance */ 
+#pragma warning(disable: 4244)
+
+#define VERSION "0.7.0"
 
 #define NOMINMAX
 #ifndef WIN32
@@ -58,4 +61,5 @@ int gettimeofday(struct timeval * tv, struct timezone * tz);
 
 #define usleep(ms) Sleep(ms)
 
-#define VERSION "0.6.1"
+#define SOCKOPT_CAST_T char
+#define AF_LOCAL AF_INET

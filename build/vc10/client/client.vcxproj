@@ -81,6 +81,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -96,6 +97,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
