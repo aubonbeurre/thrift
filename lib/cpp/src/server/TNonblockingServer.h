@@ -936,6 +936,7 @@ class TConnection {
 #else
     if (errno && errno != EWOULDBLOCK && errno != EAGAIN) {
       GlobalOutput.perror("TConnection::taskHandler read failed, resource leak", errno);
+    }
 #endif
   }
 
