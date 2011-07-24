@@ -3,8 +3,11 @@
 
 #include <stdio.h>
 
-#ifndef WIN32
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
@@ -22,10 +25,6 @@
 #include <tr1/functional>
 
 #include "../gen-cpp/Calculator.h"
-
-#ifdef WIN32
-#include <tchar.h>
-#endif
 
 using namespace std;
 using namespace apache::thrift;
@@ -100,7 +99,7 @@ int main(int argc, char **argv)
 {
  	event_config *conf = event_config_new();
 
-#ifdef WIN32
+#ifdef _WIN32
 	WORD wVersionRequested;
 	WSADATA wsaData;
 	int err;

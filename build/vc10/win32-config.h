@@ -2,17 +2,43 @@
 #pragma warning(disable: 4996) /* The POSIX name for this item is deprecated */ 
 #pragma warning(disable: 4250) /* inherits via dominance */ 
 #pragma warning(disable: 4244)
+#pragma warning(disable: 4267) /* possible loss of data */
 
 #define VERSION "0.7.0"
 
 #define NOMINMAX
-#ifndef WIN32
-#define WIN32
-#endif
+
+#include <WinSock2.h>
+#include <Windows.h>
+#include <io.h>
+#include <ws2tcpip.h>
 
 #include <xstddef>
 #include <stdint.h>
 #include <time.h>
+#include <errno.h>
+
+#undef gai_strerror
+#define gai_strerror gai_strerrorA
+
+#undef errno
+#undef EINTR
+#undef EINPROGRESS
+#undef ECONNRESET
+#undef ENOTCONN
+#undef ETIMEDOUT
+#undef EWOULDBLOCK
+#undef EAGAIN
+#undef EPIPE
+#define errno ::WSAGetLastError()
+#define EINPROGRESS WSAEINPROGRESS
+#define EAGAIN WSAEWOULDBLOCK
+#define EINTR WSAEINTR
+#define ECONNRESET WSAECONNRESET
+#define ENOTCONN WSAENOTCONN
+#define ETIMEDOUT WSAETIMEDOUT
+#define EWOULDBLOCK WSAEWOULDBLOCK
+#define EPIPE WSAECONNRESET
 
 #define ctime_r( _clock, _buf ) \
         ( strcpy( (_buf), ctime( (_clock) ) ),  \
@@ -35,8 +61,6 @@ struct timespec {
         long tv_sec;
         long tv_nsec;
 };
-
-#include <time.h>
 
 #define HAVE_GETTIMEOFDAY
  

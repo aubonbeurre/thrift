@@ -17,45 +17,39 @@
  * under the License.
  */
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+
 #include <cstring>
 #include <sstream>
 #include <sys/types.h>
 #include <errno.h>
 
-#ifndef WIN32
+#ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
-#include <sys/un.h>
-#include <sys/poll.h>
-#include <arpa/inet.h>
+#endif
+
+#ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h>
 #include <netinet/tcp.h>
-#include <netdb.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#include <WinSock2.h>
-#include <io.h>
-#include <ws2tcpip.h>
-#undef gai_strerror
-#define gai_strerror gai_strerrorA
-#undef errno
-#undef EINTR
-#undef EINPROGRESS
-#undef ECONNRESET
-#undef ENOTCONN
-#undef ETIMEDOUT
-#undef EWOULDBLOCK
-#undef EAGAIN
-#undef EPIPE
-#define errno ::WSAGetLastError()
-#define EINPROGRESS WSAEINPROGRESS
-#define EAGAIN WSAEWOULDBLOCK
-#define EINTR WSAEINTR
-#define ECONNRESET WSAECONNRESET
-#define ENOTCONN WSAENOTCONN
-#define ETIMEDOUT WSAETIMEDOUT
-#define EWOULDBLOCK WSAEWOULDBLOCK
-#define EPIPE WSAECONNRESET
+#endif
+
+#ifdef HAVE_NETDB_H
+#include <netdb.h>
+#endif
+
+#ifndef _WIN32
+#include <sys/un.h>
+#include <sys/poll.h>
+#endif
+
+#ifdef HAVE_ARPA_INET_H
+#include <arpa/inet.h>
 #endif
 
 #include <fcntl.h>
@@ -237,7 +231,7 @@ void TSocket::openConnection(struct addrinfo *res) {
   // Connect the socket
   int ret;
   if (! path_.empty()) {
-#ifndef WIN32
+#ifndef _WIN32
     struct sockaddr_un address;
     socklen_t len;
 
@@ -386,7 +380,7 @@ void TSocket::local_open(){
 
 void TSocket::close() {
   if (socket_ >= 0) {
-#ifdef WIN32
+#ifdef _WIN32
     shutdown(socket_, SD_BOTH);
     ::closesocket(socket_);
 #else
@@ -481,7 +475,7 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
     }
     #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 	if(errno_copy == WSAECONNRESET) {
 		return 0; // EOF
 	}

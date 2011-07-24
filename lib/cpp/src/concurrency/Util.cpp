@@ -27,10 +27,8 @@
 #include <time.h>
 #endif // defined(HAVE_CLOCK_GETTIME)
 
-#ifndef WIN32
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
-#else
-#include <WinSock2.h>
 #endif
 
 namespace apache { namespace thrift { namespace concurrency {

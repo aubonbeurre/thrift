@@ -30,7 +30,7 @@
 #include <string>
 #include <errno.h>
 #include <cstdlib>
-#ifndef WIN32
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 #include <event.h>
@@ -929,7 +929,7 @@ class TConnection {
     if (nBytes > 0) {
       throw TException("TConnection::taskHandler unexpected partial read");
     }
-#ifdef WIN32
+#ifdef _WIN32
     int err = ::WSAGetLastError();
     if(err && err != WSAEWOULDBLOCK)
       GlobalOutput.perror("TConnection::taskHandler read failed, resource leak", err);
