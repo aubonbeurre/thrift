@@ -44,32 +44,6 @@
 #define AF_LOCAL AF_UNIX
 #endif
 
-#ifdef WIN32
-#include <WinSock2.h>
-#include <io.h>
-#include <ws2tcpip.h>
-#undef gai_strerror
-#define gai_strerror gai_strerrorA
-#undef errno
-#undef EINTR
-#undef EINPROGRESS
-#undef ECONNRESET
-#undef ENOTCONN
-#undef ETIMEDOUT
-#undef EWOULDBLOCK
-#undef EAGAIN
-#undef EPIPE
-#define errno ::WSAGetLastError()
-#define EINPROGRESS WSAEINPROGRESS
-#define EAGAIN WSAEWOULDBLOCK
-#define EINTR WSAEINTR
-#define ECONNRESET WSAECONNRESET
-#define ENOTCONN WSAENOTCONN
-#define ETIMEDOUT WSAETIMEDOUT
-#define EWOULDBLOCK WSAEWOULDBLOCK
-#define EPIPE WSAECONNRESET
-#endif
-
 namespace apache { namespace thrift { namespace server {
 
 using namespace apache::thrift::protocol;
