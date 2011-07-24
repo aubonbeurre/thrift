@@ -88,7 +88,7 @@ using apache::thrift::transport::TTransport;
 #  define __BYTE_ORDER BYTE_ORDER
 #  define __LITTLE_ENDIAN LITTLE_ENDIAN
 #  define __BIG_ENDIAN BIG_ENDIAN
-#elif defined(WIN32)
+#elif defined(_WIN32)
 #  define __LITTLE_ENDIAN (1234)
 #  define __BIG_ENDIAN (4321)
 #  define __BYTE_ORDER __LITTLE_ENDIAN
