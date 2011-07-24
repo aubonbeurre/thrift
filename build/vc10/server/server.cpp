@@ -21,10 +21,6 @@
 
 #include "../gen-cpp/Calculator.h"
 
-#ifdef WIN32
-#include <tchar.h>
-#endif
-
 using namespace std;
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
