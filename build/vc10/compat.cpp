@@ -1,6 +1,3 @@
-#include "config.h"
-
-#include <WinSock2.h>
 
 int fcntl(int fd, int cmd, int flags) {
 	if(cmd != F_GETFL && cmd != F_SETFL)

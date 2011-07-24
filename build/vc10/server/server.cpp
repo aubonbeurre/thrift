@@ -21,10 +21,6 @@
 
 #include "../gen-cpp/Calculator.h"
 
-#ifdef WIN32
-#include <tchar.h>
-#endif
-
 using namespace std;
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
@@ -38,7 +34,7 @@ using namespace shared;
 
 using namespace boost;
 
-#ifdef WIN32
+#ifdef _WIN32
 #define snprintf _snprintf_c
 #endif
 
@@ -211,7 +207,7 @@ int main(int argc, char **argv)
 {
 	event_config *conf = event_config_new();
 
-#ifdef WIN32
+#ifdef _WIN32
 	WORD wVersionRequested;
 	WSADATA wsaData;
 	int err;

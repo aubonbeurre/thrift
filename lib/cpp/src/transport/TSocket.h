@@ -21,13 +21,12 @@
 #define _THRIFT_TRANSPORT_TSOCKET_H_ 1
 
 #include <string>
-#ifndef WIN32
+
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
+#ifdef HAVE_NETDB_H
 #include <netdb.h>
-#else
-#include <WinSock2.h>
-#include <io.h>
-#include <ws2tcpip.h>
 #endif
 
 #include "TTransport.h"
