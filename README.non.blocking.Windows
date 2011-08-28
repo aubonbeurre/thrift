@@ -2,7 +2,7 @@ Apache Thrift non-blocking for Windows (using libevent)
 
 Last Modified: 2011-Jun-11
 
-This file on: https://github.com/aubonbeurre/thrift/blob/alex-0.7.0/README.non.blocking.Windows
+This file on: https://github.com/aubonbeurre/thrift/blob/winthriftnb-0.7.x/README.non.blocking.Windows
 
 License
 =======
@@ -31,11 +31,11 @@ git clone https://aubonbeurre@github.com/aubonbeurre/Libevent.git libevent
 cd libevent
 git checkout alex-2.0.12
 
-- clone https://github.com/aubonbeurre/thrift (branch https://github.com/aubonbeurre/thrift/tree/alex-0.7.0)
+- clone https://github.com/aubonbeurre/thrift (branch https://github.com/aubonbeurre/thrift/tree/winthriftnb-0.7.x)
 
 git clone https://aubonbeurre@github.com/aubonbeurre/thrift.git thrift
 cd thrift
-git checkout alex-0.7.0
+git checkout winthriftnb-0.7.x
 
 - download boost 1.44 (http://boost.org)
 - define THIRD_PARTY environment variable (see THRIFT-1031 for a full explanation), so that:
@@ -85,7 +85,7 @@ Changes inside Thrift are related to create vc10 projects, and also compiling fo
 
 git clone https://aubonbeurre@github.com/aubonbeurre/thrift.git thrift
 cd thrift
-git checkout alex-0.7.0
+git checkout winthriftnb-0.7.x
 git diff thrift-0.7.0
 
 See THRIFT-1123 THRIFT-1031 THRIFT-591.
