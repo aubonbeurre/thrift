@@ -30,7 +30,9 @@
 #include <string>
 #include <errno.h>
 #include <cstdlib>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <event.h>
 
 namespace apache { namespace thrift { namespace server {
@@ -933,9 +935,15 @@ class TConnection {
     if (nBytes > 0) {
       throw TException("TConnection::taskHandler unexpected partial read");
     }
+#ifdef _WIN32
+    int err = ::WSAGetLastError();
+    if(err && err != WSAEWOULDBLOCK)
+      GlobalOutput.perror("TConnection::taskHandler read failed, resource leak", err);
+#else
     if (errno && errno != EWOULDBLOCK && errno != EAGAIN) {
       GlobalOutput.perror("TConnection::taskHandler read failed, resource leak", errno);
     }
+#endif
   }
 
   /**

@@ -26,7 +26,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/static_assert.hpp>
 
+#ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h>
+#endif
 #include <sys/types.h>
 #include <string>
 #include <map>
@@ -86,6 +88,10 @@ using apache::thrift::transport::TTransport;
 #  define __BYTE_ORDER BYTE_ORDER
 #  define __LITTLE_ENDIAN LITTLE_ENDIAN
 #  define __BIG_ENDIAN BIG_ENDIAN
+#elif defined(_WIN32)
+#  define __LITTLE_ENDIAN (1234)
+#  define __BIG_ENDIAN (4321)
+#  define __BYTE_ORDER __LITTLE_ENDIAN
 # else
 #  include <boost/config.hpp>
 #  define __BYTE_ORDER BOOST_BYTE_ORDER
