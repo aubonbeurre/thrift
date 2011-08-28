@@ -8,6 +8,16 @@
 
 #define NOMINMAX
 
+//#define WIN_XP
+
+#ifdef WIN_XP
+//Because WSAPoll is not implemented for winxp
+#	define WINVER 0x0502
+#	define _WIN32_WINNT 0x0502
+#	define _WIN32_WINDOWS 0x0502
+#	define USE_SELECT_NOT_POLL
+#endif //WIN_XP
+
 #include <WinSock2.h>
 #include <Windows.h>
 #include <io.h>
@@ -78,10 +88,12 @@ struct timezone
 
 int gettimeofday(struct timeval * tv, struct timezone * tz);
 
+#ifndef USE_SELECT_NOT_POLL
 //Answer: Works, but only on Windows 7 and Windows Server 2008 version od Winsocks2 DLL
 // see https://issues.apache.org/jira/browse/THRIFT-1123
 #   define poll(poll_array, count, timeout) \
         WSAPoll(poll_array, count, timeout)
+#endif //USE_SELECT_NOT_POLL
 
 #define usleep(ms) Sleep(ms)
 
