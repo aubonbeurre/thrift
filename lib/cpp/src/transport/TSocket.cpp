@@ -271,7 +271,7 @@ void TSocket::openConnection(struct addrinfo *res) {
   fds.fd_array[0] = socket_;
   struct timeval maxWaitTime = {
     connTimeout_ / 1000,
-    connTimeout_ % 1000};
+    (connTimeout_ % 1000)*1000};
   ret = select(0 /* unused by windows */, NULL, &fds, NULL, &maxWaitTime);
 #else //USE_SELECT_NOT_POLL
   struct pollfd fds[1];
