@@ -30,6 +30,7 @@
 #ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <arpa/inet.h>
 #endif
 
 #ifdef HAVE_NETDB_H
@@ -77,15 +78,16 @@ class TConnection::Task: public Runnable {
           break;
         }
       }
-    } catch (TTransportException& ttx) {
-      cerr << "TNonblockingServer client died: " << ttx.what() << endl;
-    } catch (TException& x) {
-      cerr << "TNonblockingServer exception: " << x.what() << endl;
-    } catch (bad_alloc&) {
-      cerr << "TNonblockingServer caught bad_alloc exception.";
+    } catch (const TTransportException& ttx) {
+      GlobalOutput.printf("TNonblockingServer client died: %s", ttx.what());
+    } catch (const bad_alloc&) {
+      GlobalOutput("TNonblockingServer caught bad_alloc exception.");
       exit(-1);
+    } catch (const std::exception& x) {
+      GlobalOutput.printf("TNonblockingServer process() exception: %s: %s",
+                          typeid(x).name(), x.what());
     } catch (...) {
-      cerr << "TNonblockingServer uncaught exception." << endl;
+      GlobalOutput("TNonblockingServer uncaught exception.");
     }
 
     // Signal completion back to the libevent thread via a pipe
@@ -319,13 +321,15 @@ void TConnection::transition() {
       try {
         // Invoke the processor
         server_->getProcessor()->process(inputProtocol_, outputProtocol_, NULL);
-      } catch (TTransportException &ttx) {
-        GlobalOutput.printf("TTransportException: Server::process() %s", ttx.what());
+      } catch (const TTransportException &ttx) {
+        GlobalOutput.printf("TNonblockingServer transport error in "
+                            "process(): %s", ttx.what());
         server_->decrementActiveProcessors();
         close();
         return;
-      } catch (TException &x) {
-        GlobalOutput.printf("TException: Server::process() %s", x.what());
+      } catch (const std::exception &x) {
+        GlobalOutput.printf("Server::process() uncaught exception: %s: %s",
+                            typeid(x).name(), x.what());
         server_->decrementActiveProcessors();
         close();
         return;
@@ -567,7 +571,7 @@ TNonblockingServer::~TNonblockingServer() {
     delete connection;
   }
 
-  if (eventBase_) {
+  if (eventBase_ && ownEventBase_) {
     event_base_free(eventBase_);
   }
 
@@ -802,15 +806,16 @@ void TNonblockingServer::createNotificationPipe() {
 /**
  * Register the core libevent events onto the proper base.
  */
-void TNonblockingServer::registerEvents(event_base* base) {
+void TNonblockingServer::registerEvents(event_base* base, bool ownEventBase) {
   assert(serverSocket_ != -1);
   assert(!eventBase_);
   eventBase_ = base;
+  ownEventBase_ = ownEventBase;
 
   // Print some libevent stats
   GlobalOutput.printf("libevent %s method %s",
           event_get_version(),
-          event_get_method());
+          event_base_get_method(eventBase_));
 
   // Register the server event
   event_set(&serverEvent_,
@@ -911,15 +916,54 @@ void TNonblockingServer::serve() {
   }
 
   // Initialize libevent core
-  registerEvents(static_cast<event_base*>(event_init()));
+  registerEvents(static_cast<event_base*>(event_base_new()), true);
 
   // Run the preServe event
   if (eventHandler_ != NULL) {
     eventHandler_->preServe();
   }
 
-  // Run libevent engine, never returns, invokes calls to eventHandler
+  // Run libevent engine, invokes calls to eventHandler
+  // Only returns if stop() is called.
   event_base_loop(eventBase_, 0);
+}
+
+void TNonblockingServer::stop() {
+  if (!eventBase_) {
+    return;
+  }
+
+  // Call event_base_loopbreak() to tell libevent to exit the loop
+  //
+  // (The libevent documentation doesn't explicitly state that this function is
+  // safe to call from another thread.  However, all it does is set a variable,
+  // in the event_base, so it should be fine.)
+  event_base_loopbreak(eventBase_);
+
+  // event_base_loopbreak() only causes the loop to exit the next time it wakes
+  // up.  We need to force it to wake up, in case there are no real events
+  // it needs to process.
+  //
+  // Attempt to connect to the server socket.  If anything fails,
+  // we'll just have to wait until libevent wakes up on its own.
+  //
+  // First create a socket
+  int fd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+  if (fd < 0) {
+    return;
+  }
+
+  // Set up the address
+  struct sockaddr_in addr;
+  addr.sin_family = AF_INET;
+  addr.sin_addr.s_addr = htonl(0x7f000001); // 127.0.0.1
+  addr.sin_port = htons(port_);
+
+  // Finally do the connect().
+  // We don't care about the return value;
+  // we're just going to close the socket either way.
+  connect(fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(addr));
+  close(fd);
 }
 
 }}} // apache::thrift::server
