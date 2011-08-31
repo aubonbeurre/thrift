@@ -35,7 +35,7 @@ class CalculatorAsyncHandler : public CalculatorCobSvIf {
     return cob(_return);
   }
 
-  void calculate(std::tr1::function<void(int32_t const& _return)> cob, std::tr1::function<void(::apache::thrift::TDelayedException* _throw)> exn_cob, const int32_t logid, const Work& w) {
+  void calculate(std::tr1::function<void(int32_t const& _return)> cob, std::tr1::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int32_t logid, const Work& w) {
     int32_t _return = 0;
     _return = syncHandler_->calculate(logid, w);
     return cob(_return);
