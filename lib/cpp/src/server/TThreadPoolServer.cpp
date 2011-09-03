@@ -108,28 +108,6 @@ public:
   shared_ptr<TTransport> transport_;
 };
 
-TThreadPoolServer::TThreadPoolServer(shared_ptr<TProcessor> processor,
-                                     shared_ptr<TServerTransport> serverTransport,
-                                     shared_ptr<TTransportFactory> transportFactory,
-                                     shared_ptr<TProtocolFactory> protocolFactory,
-                                     shared_ptr<ThreadManager> threadManager) :
-  TServer(processor, serverTransport, transportFactory, protocolFactory),
-  threadManager_(threadManager),
-  stop_(false), timeout_(0) {}
-
-TThreadPoolServer::TThreadPoolServer(shared_ptr<TProcessor> processor,
-                                     shared_ptr<TServerTransport> serverTransport,
-                                     shared_ptr<TTransportFactory> inputTransportFactory,
-                                     shared_ptr<TTransportFactory> outputTransportFactory,
-                                     shared_ptr<TProtocolFactory> inputProtocolFactory,
-                                     shared_ptr<TProtocolFactory> outputProtocolFactory,
-                                     shared_ptr<ThreadManager> threadManager) :
-  TServer(processor, serverTransport, inputTransportFactory, outputTransportFactory,
-          inputProtocolFactory, outputProtocolFactory),
-  threadManager_(threadManager),
-  stop_(false), timeout_(0) {}
-
-
 TThreadPoolServer::~TThreadPoolServer() {}
 
 void TThreadPoolServer::serve() {
@@ -170,8 +148,13 @@ void TThreadPoolServer::serve() {
       inputProtocol = inputProtocolFactory_->getProtocol(inputTransport);
       outputProtocol = outputProtocolFactory_->getProtocol(outputTransport);
 
+      shared_ptr<TProcessor> processor = getProcessor(inputProtocol,
+                                                      outputProtocol, client);
+
       // Add to threadmanager pool
-      threadManager_->add(shared_ptr<TThreadPoolServer::Task>(new TThreadPoolServer::Task(*this, processor_, inputProtocol, outputProtocol, client)), timeout_);
+      shared_ptr<TThreadPoolServer::Task> task(new TThreadPoolServer::Task(
+            *this, processor, inputProtocol, outputProtocol, client));
+      threadManager_->add(task, timeout_);
 
     } catch (TTransportException& ttx) {
       if (inputTransport != NULL) { inputTransport->close(); }

@@ -88,6 +88,9 @@ class TNonblockingServer::TConnection {
   /// Server handle
   TNonblockingServer* server_;
 
+  /// TProcessor
+  boost::shared_ptr<TProcessor> processor_;
+
   /// Object wrapping network socket
   boost::shared_ptr<TSocket> tSocket_;
 
@@ -244,7 +247,7 @@ class TNonblockingServer::TConnection {
    * @param which the flags associated with the event.
    * @param v void* callback arg where we placed TConnection's "this".
    */
-  static void eventHandler(int fd, short /* which */, void* v) {
+  static void eventHandler(evutil_socket_t fd, short /* which */, void* v) {
     assert(fd == ((TConnection*)v)->getTSocket()->getSocketFD());
     ((TConnection*)v)->workSocket();
   }
@@ -257,10 +260,10 @@ class TNonblockingServer::TConnection {
    *
    * @param fd the descriptor the event occurred on.
    */
-  static void taskHandler(int fd, short /* which */, void* /* v */) {
+  static void taskHandler(evutil_socket_t fd, short /* which */, void* /* v */) {
     TConnection* connection;
     ssize_t nBytes;
-    while ((nBytes = read(fd, (void*)&connection, sizeof(TConnection*)))
+    while ((nBytes = recv(fd, cast_sockopt(&connection), sizeof(TConnection*), 0))
         == sizeof(TConnection*)) {
       connection->transition();
     }
@@ -281,8 +284,8 @@ class TNonblockingServer::TConnection {
    */
   bool notifyServer() {
     TConnection* connection = this;
-    if (write(server_->getNotificationSendFD(), (const void*)&connection,
-             sizeof(TConnection*)) != sizeof(TConnection*)) {
+    if (send(server_->getNotificationSendFD(), const_cast_sockopt(&connection),
+             sizeof(TConnection*), 0) != sizeof(TConnection*)) {
       return false;
     }
 
@@ -420,6 +423,9 @@ void TNonblockingServer::TConnection::init(int socket, short eventFlags,
   } else {
     connectionContext_ = NULL;
   }
+
+  // Get the processor
+  processor_ = s->getProcessor(inputProtocol_, outputProtocol_, tSocket_);
 }
 
 void TNonblockingServer::TConnection::workSocket() {
@@ -550,8 +556,6 @@ void TNonblockingServer::TConnection::workSocket() {
  */
 void TNonblockingServer::TConnection::transition() {
 
-  int sz = 0;
-
   // Switch upon the state that we are currently in and move to a new state
   switch (appState_) {
 
@@ -572,7 +576,7 @@ void TNonblockingServer::TConnection::transition() {
 
       // Create task and dispatch to the thread manager
       boost::shared_ptr<Runnable> task =
-        boost::shared_ptr<Runnable>(new Task(server_->getProcessor(),
+        boost::shared_ptr<Runnable>(new Task(processor_,
                                              inputProtocol_,
                                              outputProtocol_,
                                              this));
@@ -595,8 +599,8 @@ void TNonblockingServer::TConnection::transition() {
     } else {
       try {
         // Invoke the processor
-        server_->getProcessor()->process(inputProtocol_, outputProtocol_,
-                                         connectionContext_);
+        processor_->process(inputProtocol_, outputProtocol_,
+                            connectionContext_);
       } catch (const TTransportException &ttx) {
         GlobalOutput.printf("TNonblockingServer transport error in "
                             "process(): %s", ttx.what());
