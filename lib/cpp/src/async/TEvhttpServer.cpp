@@ -68,6 +68,7 @@ TEvhttpServer::TEvhttpServer(boost::shared_ptr<TAsyncBufferProcessor> processor,
   if (ret < 0) {
     evhttp_free(eh_);
     event_base_free(eb_);
+	abort();  // XXX
   }
 
   // Register a handler.  If you use the other constructor,

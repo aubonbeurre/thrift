@@ -19,9 +19,46 @@
 
 #include <Python.h>
 #include "cStringIO.h"
+#ifndef _WIN32
 #include <stdbool.h>
 #include <stdint.h>
 #include <netinet/in.h>
+#else
+#define WIN32
+#include <WinSock2.h>
+#pragma comment (lib, "ws2_32.lib")
+#include <yvals.h>
+#define BIG_ENDIAN (4321)
+#define LITTLE_ENDIAN (1234)
+#define BYTE_ORDER LITTLE_ENDIAN
+#if defined(_MSC_VER) && _MSC_VER <= 1500
+typedef int _Bool;
+typedef signed char int8_t;
+typedef short int16_t;
+typedef int int32_t;
+typedef unsigned char uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int uint32_t;
+#define INT8_MAX	0x7f
+#define INT16_MAX	0x7fff
+#define INT32_MAX	0x7fffffff
+#define UINT8_MAX	0xff
+#define UINT16_MAX	0xffff
+#define UINT32_MAX	0xffffffff
+#define INT8_MIN	(-0x7f - _C2)
+#define INT16_MIN	(-0x7fff - _C2)
+#define INT32_MIN	(-0x7fffffff - _C2)
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+#define INT64_MIN	(-0x7fffffffffffffff - _C2)
+#define INT64_MAX	0x7fffffffffffffff
+#define UINT64_MAX	0xffffffffffffffffU
+#endif
+#define bool _Bool
+#define false 0 
+#define true 1
+#define inline
+#endif
 
 /* Fix endianness issues on Solaris */
 #if defined (__SVR4) && defined (__sun)
@@ -1110,11 +1147,12 @@ decode_val(DecodeBuffer* input, TType type, PyObject* typeargs) {
 
   case T_STRUCT: {
     StructTypeArgs parsedargs;
+	PyObject* ret;
     if (!parse_struct_args(&parsedargs, typeargs)) {
       return NULL;
     }
 
-    PyObject* ret = PyObject_CallObject(parsedargs.klass, NULL);
+    ret = PyObject_CallObject(parsedargs.klass, NULL);
     if (!ret) {
       return NULL;
     }
@@ -1147,8 +1185,8 @@ decode_binary(PyObject *self, PyObject *args) {
   PyObject* transport = NULL;
   PyObject* typeargs = NULL;
   StructTypeArgs parsedargs;
-  DecodeBuffer input = {};
-
+  DecodeBuffer input = {0, 0};
+  
   if (!PyArg_ParseTuple(args, "OOO", &output_obj, &transport, &typeargs)) {
     return NULL;
   }
