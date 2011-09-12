@@ -7,6 +7,7 @@
 #define VERSION "0.8.0-dev"
 
 #define NOMINMAX
+#define HAVE_PTHREAD_H
 
 //#define WIN_XP
 
