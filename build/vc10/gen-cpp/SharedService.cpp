@@ -335,6 +335,12 @@ void SharedServiceProcessor::process_getStruct(int32_t seqid, ::apache::thrift::
   }
 }
 
+::boost::shared_ptr< ::apache::thrift::TProcessor > SharedServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< SharedServiceIfFactory > cleanup(handlerFactory_);
+  ::boost::shared_ptr< SharedServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new SharedServiceProcessor(handler));
+  return processor;
+}
 void SharedServiceCobClient::getStruct(std::tr1::function<void(SharedServiceCobClient* client)> cob, const int32_t key)
 {
   send_getStruct(key);
@@ -516,5 +522,11 @@ void SharedServiceAsyncProcessor::return_getStruct(std::tr1::function<void(bool 
   return cob(true);
 }
 
+::boost::shared_ptr< ::apache::thrift::TProcessor > SharedServiceAsyncProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< SharedServiceCobSvIfFactory > cleanup(handlerFactory_);
+  ::boost::shared_ptr< SharedServiceCobSvIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new SharedServiceAsyncProcessor(handler));
+  return processor;
+}
 } // namespace
 

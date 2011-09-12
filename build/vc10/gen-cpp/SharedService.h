@@ -24,6 +24,30 @@ class SharedServiceIf {
   virtual void getStruct(SharedStruct& _return, const int32_t key) = 0;
 };
 
+class SharedServiceIfFactory {
+ public:
+  typedef SharedServiceIf Handler;
+
+  virtual ~SharedServiceIfFactory() {}
+
+  virtual SharedServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(SharedServiceIf* /* handler */) = 0;
+};
+
+class SharedServiceIfSingletonFactory : virtual public SharedServiceIfFactory {
+ public:
+  SharedServiceIfSingletonFactory(const boost::shared_ptr<SharedServiceIf>& iface) : iface_(iface) {}
+  virtual ~SharedServiceIfSingletonFactory() {}
+
+  virtual SharedServiceIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(SharedServiceIf* /* handler */) {}
+
+ protected:
+  boost::shared_ptr<SharedServiceIf> iface_;
+};
+
 class SharedServiceNull : virtual public SharedServiceIf {
  public:
   virtual ~SharedServiceNull() {}
@@ -188,6 +212,17 @@ class SharedServiceProcessor : public ::apache::thrift::TProcessor {
   virtual ~SharedServiceProcessor() {}
 };
 
+class SharedServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
+ public:
+  SharedServiceProcessorFactory(const ::boost::shared_ptr< SharedServiceIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::boost::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::boost::shared_ptr< SharedServiceIfFactory > handlerFactory_;
+};
+
 class SharedServiceMultiface : virtual public SharedServiceIf {
  public:
   SharedServiceMultiface(std::vector<boost::shared_ptr<SharedServiceIf> >& ifaces) : ifaces_(ifaces) {
@@ -226,6 +261,30 @@ class SharedServiceCobSvIf {
  public:
   virtual ~SharedServiceCobSvIf() {}
   virtual void getStruct(std::tr1::function<void(SharedStruct const& _return)> cob, const int32_t key) = 0;
+};
+
+class SharedServiceCobSvIfFactory {
+ public:
+  typedef SharedServiceCobSvIf Handler;
+
+  virtual ~SharedServiceCobSvIfFactory() {}
+
+  virtual SharedServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(SharedServiceCobSvIf* /* handler */) = 0;
+};
+
+class SharedServiceCobSvIfSingletonFactory : virtual public SharedServiceCobSvIfFactory {
+ public:
+  SharedServiceCobSvIfSingletonFactory(const boost::shared_ptr<SharedServiceCobSvIf>& iface) : iface_(iface) {}
+  virtual ~SharedServiceCobSvIfSingletonFactory() {}
+
+  virtual SharedServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(SharedServiceCobSvIf* /* handler */) {}
+
+ protected:
+  boost::shared_ptr<SharedServiceCobSvIf> iface_;
 };
 
 class SharedServiceCobSvNull : virtual public SharedServiceCobSvIf {
@@ -282,6 +341,17 @@ class SharedServiceAsyncProcessor : public ::apache::thrift::TAsyncProcessor {
 
   virtual void process(std::tr1::function<void(bool ok)> cob, boost::shared_ptr<apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr<apache::thrift::protocol::TProtocol> poprot);
   virtual ~SharedServiceAsyncProcessor() {}
+};
+
+class SharedServiceAsyncProcessorFactory : public ::apache::thrift::TProcessorFactory {
+ public:
+  SharedServiceAsyncProcessorFactory(const ::boost::shared_ptr< SharedServiceCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::boost::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::boost::shared_ptr< SharedServiceCobSvIfFactory > handlerFactory_;
 };
 
 } // namespace

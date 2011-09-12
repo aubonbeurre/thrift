@@ -28,6 +28,30 @@ class CalculatorIf : virtual public  ::shared::SharedServiceIf {
   virtual void zip() = 0;
 };
 
+class CalculatorIfFactory : virtual public  ::shared::SharedServiceIfFactory {
+ public:
+  typedef CalculatorIf Handler;
+
+  virtual ~CalculatorIfFactory() {}
+
+  virtual CalculatorIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler( ::shared::SharedServiceIf* /* handler */) = 0;
+};
+
+class CalculatorIfSingletonFactory : virtual public CalculatorIfFactory {
+ public:
+  CalculatorIfSingletonFactory(const boost::shared_ptr<CalculatorIf>& iface) : iface_(iface) {}
+  virtual ~CalculatorIfSingletonFactory() {}
+
+  virtual CalculatorIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler( ::shared::SharedServiceIf* /* handler */) {}
+
+ protected:
+  boost::shared_ptr<CalculatorIf> iface_;
+};
+
 class CalculatorNull : virtual public CalculatorIf , virtual public  ::shared::SharedServiceNull {
  public:
   virtual ~CalculatorNull() {}
@@ -454,6 +478,17 @@ class CalculatorProcessor : public  ::shared::SharedServiceProcessor {
   virtual ~CalculatorProcessor() {}
 };
 
+class CalculatorProcessorFactory : public ::apache::thrift::TProcessorFactory {
+ public:
+  CalculatorProcessorFactory(const ::boost::shared_ptr< CalculatorIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::boost::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::boost::shared_ptr< CalculatorIfFactory > handlerFactory_;
+};
+
 class CalculatorMultiface : virtual public CalculatorIf, public  ::shared::SharedServiceMultiface {
  public:
   CalculatorMultiface(std::vector<boost::shared_ptr<CalculatorIf> >& ifaces) : ifaces_(ifaces) {
@@ -529,6 +564,30 @@ class CalculatorCobSvIf : virtual public  ::shared::SharedServiceCobSvIf {
   virtual void zip(std::tr1::function<void()> cob) = 0;
 };
 
+class CalculatorCobSvIfFactory : virtual public  ::shared::SharedServiceCobSvIfFactory {
+ public:
+  typedef CalculatorCobSvIf Handler;
+
+  virtual ~CalculatorCobSvIfFactory() {}
+
+  virtual CalculatorCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler( ::shared::SharedServiceCobSvIf* /* handler */) = 0;
+};
+
+class CalculatorCobSvIfSingletonFactory : virtual public CalculatorCobSvIfFactory {
+ public:
+  CalculatorCobSvIfSingletonFactory(const boost::shared_ptr<CalculatorCobSvIf>& iface) : iface_(iface) {}
+  virtual ~CalculatorCobSvIfSingletonFactory() {}
+
+  virtual CalculatorCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler( ::shared::SharedServiceCobSvIf* /* handler */) {}
+
+ protected:
+  boost::shared_ptr<CalculatorCobSvIf> iface_;
+};
+
 class CalculatorCobSvNull : virtual public CalculatorCobSvIf , virtual public  ::shared::SharedServiceCobSvNull {
  public:
   virtual ~CalculatorCobSvNull() {}
@@ -599,6 +658,17 @@ class CalculatorAsyncProcessor : public  ::shared::SharedServiceAsyncProcessor {
 
   virtual void process(std::tr1::function<void(bool ok)> cob, boost::shared_ptr<apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr<apache::thrift::protocol::TProtocol> poprot);
   virtual ~CalculatorAsyncProcessor() {}
+};
+
+class CalculatorAsyncProcessorFactory : public ::apache::thrift::TProcessorFactory {
+ public:
+  CalculatorAsyncProcessorFactory(const ::boost::shared_ptr< CalculatorCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::boost::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::boost::shared_ptr< CalculatorCobSvIfFactory > handlerFactory_;
 };
 
 } // namespace

@@ -1005,6 +1005,12 @@ void CalculatorProcessor::process_zip(int32_t, ::apache::thrift::protocol::TProt
   return;
 }
 
+::boost::shared_ptr< ::apache::thrift::TProcessor > CalculatorProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< CalculatorIfFactory > cleanup(handlerFactory_);
+  ::boost::shared_ptr< CalculatorIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new CalculatorProcessor(handler));
+  return processor;
+}
 void CalculatorCobClient::ping(std::tr1::function<void(CalculatorCobClient* client)> cob)
 {
   send_ping();
@@ -1550,5 +1556,11 @@ void CalculatorAsyncProcessor::process_zip(std::tr1::function<void(bool ok)> cob
 );
 }
 
+::boost::shared_ptr< ::apache::thrift::TProcessor > CalculatorAsyncProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< CalculatorCobSvIfFactory > cleanup(handlerFactory_);
+  ::boost::shared_ptr< CalculatorCobSvIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new CalculatorAsyncProcessor(handler));
+  return processor;
+}
 } // namespace
 
