@@ -283,11 +283,21 @@ void TSocket::openConnection(struct addrinfo *res) {
   }
 
 
+#ifdef USE_SELECT_NOT_POLL
+  struct fd_set fds;
+  fds.fd_count = 1;
+  fds.fd_array[0] = socket_;
+  struct timeval maxWaitTime = {
+    connTimeout_ / 1000,
+    (connTimeout_ % 1000)*1000};
+  ret = select(0 /* unused by windows */, NULL, &fds, NULL, &maxWaitTime);
+#else //USE_SELECT_NOT_POLL
   struct pollfd fds[1];
   std::memset(fds, 0 , sizeof(fds));
   fds[0].fd = socket_;
   fds[0].events = POLLOUT;
   ret = poll(fds, 1, connTimeout_);
+#endif //USE_SELECT_NOT_POLL
 
   if (ret > 0) {
     // Ensure the socket is connected and that there are no errors set
@@ -494,6 +504,12 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
       return 0;
     }
     #endif
+
+#ifdef _WIN32
+    if(errno_copy == WSAECONNRESET) {
+      return 0; // EOF
+    }
+#endif
 
     // Now it's not a try again case, but a real probblez
     GlobalOutput.perror("TSocket::read() recv() " + getSocketInfo(), errno_copy);
