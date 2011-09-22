@@ -522,11 +522,13 @@ void SharedServiceAsyncProcessor::return_getStruct(std::tr1::function<void(bool 
   return cob(true);
 }
 
+#if 0
 ::boost::shared_ptr< ::apache::thrift::TProcessor > SharedServiceAsyncProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< SharedServiceCobSvIfFactory > cleanup(handlerFactory_);
   ::boost::shared_ptr< SharedServiceCobSvIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
   ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new SharedServiceAsyncProcessor(handler));
   return processor;
 }
+#endif
 } // namespace
 

@@ -1555,12 +1555,13 @@ void CalculatorAsyncProcessor::process_zip(std::tr1::function<void(bool ok)> cob
   iface_->zip(std::tr1::bind(cob, true)
 );
 }
-
+#if 0
 ::boost::shared_ptr< ::apache::thrift::TProcessor > CalculatorAsyncProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< CalculatorCobSvIfFactory > cleanup(handlerFactory_);
   ::boost::shared_ptr< CalculatorCobSvIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
   ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new CalculatorAsyncProcessor(handler));
   return processor;
 }
+#endif
 } // namespace
 
