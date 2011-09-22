@@ -76,14 +76,15 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PrecompiledHeaderFile>../win32-config.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>../win32-config.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,14 +95,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PrecompiledHeaderFile>../win32-config.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>../win32-config.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -113,14 +115,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>../win32-config.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>../win32-config.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,14 +137,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>../win32-config.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>../win32-config.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,7 +163,6 @@
     <ClInclude Include="..\gen-cpp\shared_types.h" />
     <ClInclude Include="..\gen-cpp\tutorial_constants.h" />
     <ClInclude Include="..\gen-cpp\tutorial_types.h" />
-    <ClInclude Include="..\win32-config.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gen-cpp\Calculator.cpp" />
@@ -168,12 +171,6 @@
     <ClCompile Include="..\gen-cpp\shared_types.cpp" />
     <ClCompile Include="..\gen-cpp\tutorial_constants.cpp" />
     <ClCompile Include="..\gen-cpp\tutorial_types.cpp" />
-    <ClCompile Include="..\win32-config.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="client.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

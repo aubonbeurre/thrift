@@ -25,6 +25,9 @@
     <Filter Include="Source Files\concurrency">
       <UniqueIdentifier>{91c8381e-71ec-4715-92e3-ec9725a7f3e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\windows">
+      <UniqueIdentifier>{486535ed-6a65-41ba-9700-7cbbeafd9399}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\lib\cpp\src\async\TAsyncBufferProcessor.h">
@@ -87,6 +90,33 @@
     <ClInclude Include="..\win32-config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\windows\config.h">
+      <Filter>Source Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\windows\force_inc.h">
+      <Filter>Source Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\windows\Fcntl.h">
+      <Filter>Source Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\windows\Operators.h">
+      <Filter>Source Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\windows\GetTimeOfDay.h">
+      <Filter>Source Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\windows\SocketPair.h">
+      <Filter>Source Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\windows\StdAfx.h">
+      <Filter>Source Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\windows\TWinsockSingleton.h">
+      <Filter>Source Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\windows\TargetVersion.h">
+      <Filter>Source Files\windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\lib\cpp\src\async\TAsyncChannel.cpp">
@@ -125,17 +155,26 @@
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Util.cpp">
       <Filter>Source Files\concurrency</Filter>
     </ClCompile>
-    <ClCompile Include="..\compat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\lib\cpp\src\async\TEvhttpServer.cpp">
       <Filter>Source Files\async</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\lib\cpp\src\async\TEvhttpClientChannel.cpp">
       <Filter>Source Files\async</Filter>
     </ClCompile>
-    <ClCompile Include="..\win32-config.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\lib\cpp\src\windows\Fcntl.cpp">
+      <Filter>Source Files\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\windows\GetTimeOfDay.cpp">
+      <Filter>Source Files\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\windows\SocketPair.cpp">
+      <Filter>Source Files\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\windows\StdAfx.cpp">
+      <Filter>Source Files\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\windows\TWinsockSingleton.cpp">
+      <Filter>Source Files\windows</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

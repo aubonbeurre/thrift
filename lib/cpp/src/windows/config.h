@@ -28,6 +28,22 @@
 #error This is a MSVC header only.
 #endif
 
+#pragma warning(disable: 4996) /* The POSIX name for this item is deprecated */ 
+#pragma warning(disable: 4250) /* inherits via dominance */ 
+
+//#define WIN_XP
+
+#ifdef WIN_XP
+//Because WSAPoll is not implemented for winxp
+#	define WINVER 0x0502
+#	define _WIN32_WINNT 0x0502
+#	define _WIN32_WINDOWS 0x0502
+#endif //WIN_XP
+
+#define VERSION "0.8.0-dev"
+
+#define NOMINMAX
+
 #include "TargetVersion.h"
 #include "GetTimeOfDay.h"
 #include "Operators.h"
@@ -38,6 +54,9 @@
 // boost
 #include <boost/cstdint.hpp>
 
+#define HAVE_PTHREAD_H
+#define HAVE_GETTIMEOFDAY
+
 typedef boost::int64_t  int64_t;
 typedef boost::uint32_t uint32_t;
 typedef boost::uint8_t  uint8_t;
@@ -47,24 +66,15 @@ typedef boost::uint8_t  uint8_t;
 #include <ws2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
 
-// pthreads
+// ctime_r, timespec...
 #include <pthread.h>
 
-//"asm/posix_types.h"
-typedef unsigned int __kernel_size_t;
-typedef int          __kernel_ssize_t;
-
-//"linux/types.h"
-typedef __kernel_size_t  size_t;
-typedef __kernel_ssize_t ssize_t;
-
-// Missing defines.
-#define __BYTE_ORDER __LITTLE_ENDIAN
+typedef  ptrdiff_t   ssize_t;
 
 // Missing functions.
 #define usleep(ms) Sleep(ms)
 
-#if WINVER == 0x0501
+#if WINVER <= 0x0502
 #   define poll(fds, nfds, timeout) \
     select(0, NULL, fds, NULL, timeout)
 #else
