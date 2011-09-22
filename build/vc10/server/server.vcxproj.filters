@@ -36,9 +36,6 @@
     <ClInclude Include="..\gen-cpp\tutorial_constants.h">
       <Filter>Source Files\gen-cpp</Filter>
     </ClInclude>
-    <ClInclude Include="..\win32-config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="server.cpp">
@@ -61,9 +58,6 @@
     </ClCompile>
     <ClCompile Include="..\gen-cpp\tutorial_types.cpp">
       <Filter>Source Files\gen-cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\win32-config.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
