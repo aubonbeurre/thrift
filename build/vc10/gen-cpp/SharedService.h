@@ -212,12 +212,12 @@ class SharedServiceProcessor : public ::apache::thrift::TProcessor {
   virtual ~SharedServiceProcessor() {}
 };
 
-class SharedServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
+class SharedServiceProcessorFactory : public ::apache::thrift::TAsyncProcessorFactory {
  public:
   SharedServiceProcessorFactory(const ::boost::shared_ptr< SharedServiceIfFactory >& handlerFactory) :
       handlerFactory_(handlerFactory) {}
 
-  ::boost::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+  ::boost::shared_ptr< ::apache::thrift::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
   ::boost::shared_ptr< SharedServiceIfFactory > handlerFactory_;
@@ -343,12 +343,12 @@ class SharedServiceAsyncProcessor : public ::apache::thrift::TAsyncProcessor {
   virtual ~SharedServiceAsyncProcessor() {}
 };
 
-class SharedServiceAsyncProcessorFactory : public ::apache::thrift::TProcessorFactory {
+class SharedServiceAsyncProcessorFactory : public ::apache::thrift::TAsyncProcessorFactory {
  public:
   SharedServiceAsyncProcessorFactory(const ::boost::shared_ptr< SharedServiceCobSvIfFactory >& handlerFactory) :
       handlerFactory_(handlerFactory) {}
 
-  ::boost::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+  ::boost::shared_ptr< ::apache::thrift::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
   ::boost::shared_ptr< SharedServiceCobSvIfFactory > handlerFactory_;
