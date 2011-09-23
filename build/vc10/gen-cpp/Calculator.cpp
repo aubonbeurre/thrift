@@ -1005,7 +1005,7 @@ void CalculatorProcessor::process_zip(int32_t, ::apache::thrift::protocol::TProt
   return;
 }
 
-::boost::shared_ptr< ::apache::thrift::TAsyncProcessor > CalculatorProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+::boost::shared_ptr< ::apache::thrift::TProcessor > CalculatorProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< CalculatorIfFactory > cleanup(handlerFactory_);
   ::boost::shared_ptr< CalculatorIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
   ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new CalculatorProcessor(handler));
@@ -1556,7 +1556,7 @@ void CalculatorAsyncProcessor::process_zip(std::tr1::function<void(bool ok)> cob
 );
 }
 
-::boost::shared_ptr< ::apache::thrift::TAsyncProcessor > CalculatorAsyncProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+::boost::shared_ptr< ::apache::thrift::async::TAsyncProcessor > CalculatorAsyncProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< CalculatorCobSvIfFactory > cleanup(handlerFactory_);
   ::boost::shared_ptr< CalculatorCobSvIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
   ::boost::shared_ptr< ::apache::thrift::TProcessor > processor(new CalculatorAsyncProcessor(handler));
