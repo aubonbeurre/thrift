@@ -2975,7 +2975,8 @@ void ProcessorGenerator::generate_factory() {
       " > cleanup(handlerFactory_);" << endl <<
     indent() << "::boost::shared_ptr< " << if_name_ << " > handler(" <<
       "handlerFactory_->getHandler(connInfo), cleanup);" << endl <<
-    indent() << "::boost::shared_ptr< ::apache::thrift::TProcessor > " <<
+    indent() << "::boost::shared_ptr< ::apache::thrift::" <<
+      (style_ == "Cob" ? "async::TAsyncProcessor" :  "TProcessor") << " > " <<
       "processor(new " << class_name_ << template_suffix_ <<
       "(handler));" << endl <<
     indent() << "return processor;" << endl;
