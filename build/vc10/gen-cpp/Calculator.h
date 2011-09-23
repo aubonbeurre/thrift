@@ -478,12 +478,12 @@ class CalculatorProcessor : public  ::shared::SharedServiceProcessor {
   virtual ~CalculatorProcessor() {}
 };
 
-class CalculatorProcessorFactory : public ::apache::thrift::TProcessorFactory {
+class CalculatorProcessorFactory : public ::apache::thrift::TAsyncProcessorFactory {
  public:
   CalculatorProcessorFactory(const ::boost::shared_ptr< CalculatorIfFactory >& handlerFactory) :
       handlerFactory_(handlerFactory) {}
 
-  ::boost::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+  ::boost::shared_ptr< ::apache::thrift::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
   ::boost::shared_ptr< CalculatorIfFactory > handlerFactory_;
@@ -660,12 +660,12 @@ class CalculatorAsyncProcessor : public  ::shared::SharedServiceAsyncProcessor {
   virtual ~CalculatorAsyncProcessor() {}
 };
 
-class CalculatorAsyncProcessorFactory : public ::apache::thrift::TProcessorFactory {
+class CalculatorAsyncProcessorFactory : public ::apache::thrift::TAsyncProcessorFactory {
  public:
   CalculatorAsyncProcessorFactory(const ::boost::shared_ptr< CalculatorCobSvIfFactory >& handlerFactory) :
       handlerFactory_(handlerFactory) {}
 
-  ::boost::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+  ::boost::shared_ptr< ::apache::thrift::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
   ::boost::shared_ptr< CalculatorCobSvIfFactory > handlerFactory_;
