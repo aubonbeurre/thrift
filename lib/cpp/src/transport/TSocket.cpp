@@ -279,21 +279,11 @@ void TSocket::openConnection(struct addrinfo *res) {
   }
 
 
-#ifdef defined(WINVER) && WINVER <= 0x0502
-  struct fd_set fds;
-  fds.fd_count = 1;
-  fds.fd_array[0] = socket_;
-  struct timeval maxWaitTime = {
-    connTimeout_ / 1000,
-    (connTimeout_ % 1000)*1000};
-  ret = select(0 /* unused by windows */, NULL, &fds, NULL, &maxWaitTime);
-#else
   struct pollfd fds[1];
   std::memset(fds, 0 , sizeof(fds));
   fds[0].fd = socket_;
   fds[0].events = POLLOUT;
   ret = poll(fds, 1, connTimeout_);
-#endif
 
   if (ret > 0) {
     // Ensure the socket is connected and that there are no errors set

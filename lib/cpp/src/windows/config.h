@@ -43,9 +43,6 @@
 // boost
 #include <boost/cstdint.hpp>
 
-#define HAVE_PTHREAD_H
-#define HAVE_GETTIMEOFDAY
-
 typedef boost::int64_t  int64_t;
 typedef boost::uint32_t uint32_t;
 typedef boost::uint8_t  uint8_t;
@@ -55,7 +52,7 @@ typedef boost::uint8_t  uint8_t;
 #include <ws2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
 
-// ctime_r, timespec...
+// pthreads
 #include <pthread.h>
 
 typedef ptrdiff_t ssize_t;
