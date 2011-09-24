@@ -43,9 +43,6 @@
 // boost
 #include <boost/cstdint.hpp>
 
-#define HAVE_PTHREAD_H
-#define HAVE_GETTIMEOFDAY
-
 typedef boost::int64_t  int64_t;
 typedef boost::uint32_t uint32_t;
 typedef boost::uint8_t  uint8_t;
@@ -55,7 +52,7 @@ typedef boost::uint8_t  uint8_t;
 #include <ws2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
 
-// ctime_r, timespec...
+// pthreads
 #include <pthread.h>
 
 typedef ptrdiff_t ssize_t;
@@ -63,6 +60,7 @@ typedef ptrdiff_t ssize_t;
 // Missing functions.
 #define usleep(ms) Sleep(ms)
 
+#if WINVER <= 0x0502
 #define poll(fds, nfds, timeout) \
     poll_win32(fds, nfds, timeout)
 
@@ -83,6 +81,10 @@ inline int poll_win32(LPWSAPOLLFD fdArray, ULONG fds, INT timeout)
     timeval time_out = {timeout * 0.001, timeout * 1000};
     return select(1, &read_fds, &write_fds, &except_fds, &time_out);
 }
+#else
+#   define poll(fds, nfds, timeout) \
+    WSAPoll(fds, nfds, timeout)
+#endif // WINVER
 
 inline void close(SOCKET socket)
 {
