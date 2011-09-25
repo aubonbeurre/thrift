@@ -19,7 +19,12 @@
 
 #include <config.h>
 #include <concurrency/ThreadManager.h>
+#ifndef USE_BOOST_THREAD
 #include <concurrency/PosixThreadFactory.h>
+#else
+#include <concurrency/BoostThreadFactory.h>
+#define PosixThreadFactory BoostThreadFactory
+#endif
 #include <concurrency/Monitor.h>
 #include <concurrency/Util.h>
 
@@ -112,8 +117,9 @@ public:
 
     shared_ptr<PosixThreadFactory> threadFactory = shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
 
+#ifndef USE_BOOST_THREAD
     threadFactory->setPriority(PosixThreadFactory::HIGHEST);
-
+#endif
     threadManager->threadFactory(threadFactory);
 
     threadManager->start();
@@ -251,8 +257,9 @@ public:
 
       shared_ptr<PosixThreadFactory> threadFactory = shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
 
+#ifndef USE_BOOST_THREAD
       threadFactory->setPriority(PosixThreadFactory::HIGHEST);
-
+#endif
       threadManager->threadFactory(threadFactory);
 
       threadManager->start();

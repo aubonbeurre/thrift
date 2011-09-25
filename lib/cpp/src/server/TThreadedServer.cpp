@@ -19,12 +19,19 @@
 
 #include "server/TThreadedServer.h"
 #include "transport/TTransportException.h"
+#ifndef USE_BOOST_THREAD
 #include "concurrency/PosixThreadFactory.h"
+#else
+#include "concurrency/BoostThreadFactory.h"
+#define PosixThreadFactory BoostThreadFactory
+#endif
 
 #include <string>
 #include <iostream>
-#include <pthread.h>
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 namespace apache { namespace thrift { namespace server {
 

@@ -19,7 +19,12 @@
 
 #include <config.h>
 #include <concurrency/Thread.h>
+#ifndef USE_BOOST_THREAD
 #include <concurrency/PosixThreadFactory.h>
+#else
+#include <concurrency/BoostThreadFactory.h>
+#define PosixThreadFactory BoostThreadFactory
+#endif
 #include <concurrency/Monitor.h>
 #include <concurrency/Util.h>
 
@@ -318,7 +323,9 @@ public:
     for(size_t lix = 0; lix < loop; lix++) {
 
       PosixThreadFactory threadFactory = PosixThreadFactory();
+#ifndef USE_BOOST_THREAD
       threadFactory.setDetached(true);
+#endif
 
         for(size_t tix = 0; tix < count; tix++) {
 

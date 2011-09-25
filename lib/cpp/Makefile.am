@@ -41,14 +41,12 @@ endif
 
 AM_CXXFLAGS = -Wall
 AM_CPPFLAGS = $(BOOST_CPPFLAGS) -I$(srcdir)/src
+AM_LDFLAGS = $(BOOST_LDFLAGS)
 
 # Define the source files for the module
 
 libthrift_la_SOURCES = src/Thrift.cpp \
                        src/TApplicationException.cpp \
-                       src/concurrency/Mutex.cpp \
-                       src/concurrency/Monitor.cpp \
-                       src/concurrency/PosixThreadFactory.cpp \
                        src/concurrency/ThreadManager.cpp \
                        src/concurrency/TimerManager.cpp \
                        src/concurrency/Util.cpp \
@@ -76,6 +74,18 @@ libthrift_la_SOURCES = src/Thrift.cpp \
                        src/server/TThreadedServer.cpp \
                        src/async/TAsyncChannel.cpp \
                        src/processor/PeekProcessor.cpp
+
+if WITH_BOOSTTHREADS
+libthrift_la_SOURCES += src/concurrency/BoostThreadFactory.cpp \
+                        src/concurrency/BoostMonitor.cpp \
+                        src/concurrency/BoostMutex.cpp
+AM_CPPFLAGS += -DUSE_BOOST_THREAD
+else
+libthrift_la_SOURCES += src/concurrency/Mutex.cpp \
+                        src/concurrency/Monitor.cpp \
+                        src/concurrency/PosixThreadFactory.cpp
+endif
+
 
 libthriftnb_la_SOURCES = src/server/TNonblockingServer.cpp \
                          src/async/TAsyncProtocolProcessor.cpp \
@@ -180,6 +190,10 @@ concurrency_test_SOURCES = src/concurrency/test/Tests.cpp \
                            src/concurrency/test/TimerManagerTests.h
 
 concurrency_test_LDADD = libthrift.la
+
+if WITH_BOOSTTHREADS
+concurrency_test_LDADD += -lboost_thread
+endif
 
 EXTRA_DIST = \
              README \
