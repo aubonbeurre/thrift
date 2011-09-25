@@ -60,9 +60,6 @@
     <ClInclude Include="..\..\..\lib\cpp\src\TReflectionLocal.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\lib\cpp\src\transport\TBufferTransports.h">
-      <Filter>Source Files\server</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\ThreadManager.h">
       <Filter>Source Files\concurrency</Filter>
     </ClInclude>
@@ -117,6 +114,18 @@
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\BoostThreadFactory.h">
       <Filter>Source Files\concurrency</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TBufferTransports.h">
+      <Filter>Source Files\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TTransportException.h">
+      <Filter>Source Files\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TTransportUtils.h">
+      <Filter>Source Files\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TFileTransport.h">
+      <Filter>Source Files\transport</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\lib\cpp\src\async\TAsyncChannel.cpp">
@@ -136,9 +145,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\lib\cpp\src\transport\TSocket.cpp">
       <Filter>Source Files\transport</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\lib\cpp\src\transport\TBufferTransports.cpp">
-      <Filter>Source Files\server</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\ThreadManager.cpp">
       <Filter>Source Files\concurrency</Filter>
@@ -175,6 +181,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\BoostThreadFactory.cpp">
       <Filter>Source Files\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\transport\TBufferTransports.cpp">
+      <Filter>Source Files\transport</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\transport\TTransportUtils.cpp">
+      <Filter>Source Files\transport</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\transport\TFileTransport.cpp">
+      <Filter>Source Files\transport</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

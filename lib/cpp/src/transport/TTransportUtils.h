@@ -27,9 +27,7 @@
 #include <transport/TTransport.h>
 // Include the buffered transports that used to be defined here.
 #include <transport/TBufferTransports.h>
-#ifndef USE_BOOST_THREAD
 #include <transport/TFileTransport.h>
-#endif
 
 namespace apache { namespace thrift { namespace transport {
 
@@ -253,7 +251,6 @@ class TPipedTransportFactory : public TTransportFactory {
  * TTransport can still access the original transport.
  *
  */
-#ifndef USE_BOOST_THREAD
 class TPipedFileReaderTransport : public TPipedTransport,
                                   public TFileReaderTransport {
  public:
@@ -327,7 +324,6 @@ class TPipedFileReaderTransportFactory : public TPipedTransportFactory {
     return boost::shared_ptr<TFileReaderTransport>(new TPipedFileReaderTransport(srcTrans, dstTrans_));
   }
 };
-#endif //!USE_BOOST_THREAD
 
 }}} // apache::thrift::transport
 
