@@ -32,8 +32,6 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
 
-using std::tr1::placeholders::_1;
-
 using namespace tutorial;
 using namespace shared;
 
@@ -82,7 +80,7 @@ static void CalculatorAsyncHandler_addReturn(TProtocolFactory* protocolFactory, 
 	work.num1 = 1;
 	work.num2 = 0;
 
-	client->calculate(tr1::bind(CalculatorAsyncHandler_calculate1, protocolFactory, _1), 1, work);
+	client->calculate(tr1::bind(CalculatorAsyncHandler_calculate1, protocolFactory, std::tr1::placeholders::_1), 1, work);
 }
 
 static void CalculatorAsyncHandler_pingReturn(TProtocolFactory* protocolFactory, CalculatorCobClient* client) {
@@ -92,7 +90,7 @@ static void CalculatorAsyncHandler_pingReturn(TProtocolFactory* protocolFactory,
 	delete client;
 	client = new_client(protocolFactory);
 
-	client->add(tr1::bind(CalculatorAsyncHandler_addReturn, protocolFactory, _1), 1, 1);
+	client->add(tr1::bind(CalculatorAsyncHandler_addReturn, protocolFactory, std::tr1::placeholders::_1), 1, 1);
 }
 
 int main(int argc, char **argv)
@@ -137,7 +135,7 @@ int main(int argc, char **argv)
 
 	if(argc >= 2 && strcmp(argv[1], "http") ==  0) {
 		CalculatorCobClient* client = new_client(protocolFactory.get());
-		client->ping(tr1::bind(CalculatorAsyncHandler_pingReturn, protocolFactory.get(), _1));
+		client->ping(tr1::bind(CalculatorAsyncHandler_pingReturn, protocolFactory.get(), std::tr1::placeholders::_1));
 
 		event_base_loop(base, 0);
 	} else {

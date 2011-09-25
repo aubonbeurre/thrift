@@ -151,7 +151,10 @@
     <ClInclude Include="..\..\..\lib\cpp\src\TLogging.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\TProcessor.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\transport\TBufferTransports.h" />
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TFileTransport.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\transport\TSocket.h" />
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TTransportException.h" />
+    <ClInclude Include="..\..\..\lib\cpp\src\transport\TTransportUtils.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\TReflectionLocal.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\windows\config.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\windows\Fcntl.h" />
@@ -178,7 +181,9 @@
     <ClCompile Include="..\..\..\lib\cpp\src\TApplicationException.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\Thrift.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\transport\TBufferTransports.cpp" />
+    <ClCompile Include="..\..\..\lib\cpp\src\transport\TFileTransport.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\transport\TSocket.cpp" />
+    <ClCompile Include="..\..\..\lib\cpp\src\transport\TTransportUtils.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\windows\Fcntl.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\windows\GetTimeOfDay.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\windows\SocketPair.cpp" />

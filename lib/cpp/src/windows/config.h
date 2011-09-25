@@ -32,6 +32,7 @@
 #pragma warning(disable: 4250) // Inherits via dominance.
 
 #define HAVE_GETTIMEOFDAY 1
+#define HAVE_SYS_STAT_H 1
 
 #include "TargetVersion.h"
 #include "GetTimeOfDay.h"
