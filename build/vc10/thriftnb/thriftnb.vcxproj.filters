@@ -72,9 +72,6 @@
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Mutex.h">
       <Filter>Source Files\concurrency</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\lib\cpp\src\concurrency\PosixThreadFactory.h">
-      <Filter>Source Files\concurrency</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Util.h">
       <Filter>Source Files\concurrency</Filter>
     </ClInclude>
@@ -117,6 +114,9 @@
     <ClInclude Include="..\..\..\lib\cpp\src\windows\TargetVersion.h">
       <Filter>Source Files\windows</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\concurrency\BoostThreadFactory.h">
+      <Filter>Source Files\concurrency</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\lib\cpp\src\async\TAsyncChannel.cpp">
@@ -143,15 +143,6 @@
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\ThreadManager.cpp">
       <Filter>Source Files\concurrency</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Monitor.cpp">
-      <Filter>Source Files\concurrency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Mutex.cpp">
-      <Filter>Source Files\concurrency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\PosixThreadFactory.cpp">
-      <Filter>Source Files\concurrency</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Util.cpp">
       <Filter>Source Files\concurrency</Filter>
     </ClCompile>
@@ -175,6 +166,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\lib\cpp\src\windows\TWinsockSingleton.cpp">
       <Filter>Source Files\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\BoostMutex.cpp">
+      <Filter>Source Files\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\BoostMonitor.cpp">
+      <Filter>Source Files\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\BoostThreadFactory.cpp">
+      <Filter>Source Files\concurrency</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

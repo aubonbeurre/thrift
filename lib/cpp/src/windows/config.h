@@ -53,7 +53,18 @@ typedef boost::uint8_t  uint8_t;
 #pragma comment(lib, "Ws2_32.lib")
 
 // pthreads
-#include <pthread.h>
+#if 0
+#	include <pthread.h>
+#else
+struct timespec {
+	long tv_sec;
+	long tv_nsec;
+};
+#	define USE_BOOST_THREAD 1
+#	define ctime_r( _clock, _buf ) \
+        ( strcpy( (_buf), ctime( (_clock) ) ),  \
+          (_buf) )
+#endif
 
 typedef ptrdiff_t ssize_t;
 
