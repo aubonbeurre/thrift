@@ -79,7 +79,6 @@ if WITH_BOOSTTHREADS
 libthrift_la_SOURCES += src/concurrency/BoostThreadFactory.cpp \
                         src/concurrency/BoostMonitor.cpp \
                         src/concurrency/BoostMutex.cpp
-AM_CPPFLAGS += -DUSE_BOOST_THREAD
 else
 libthrift_la_SOURCES += src/concurrency/Mutex.cpp \
                         src/concurrency/Monitor.cpp \
@@ -100,6 +99,10 @@ libthriftnb_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS)
 libthriftz_la_CPPFLAGS  = $(AM_CPPFLAGS) $(ZLIB_CPPFLAGS)
 libthriftnb_la_CXXFLAGS = $(AM_CXXFLAGS)
 libthriftz_la_CXXFLAGS  = $(AM_CXXFLAGS)
+
+if WITH_BOOSTTHREADS
+libthrift_la_LIBADD = -lboost_thread
+endif
 
 include_thriftdir = $(includedir)/thrift
 include_thrift_HEADERS = \
@@ -190,10 +193,6 @@ concurrency_test_SOURCES = src/concurrency/test/Tests.cpp \
                            src/concurrency/test/TimerManagerTests.h
 
 concurrency_test_LDADD = libthrift.la
-
-if WITH_BOOSTTHREADS
-concurrency_test_LDADD += -lboost_thread
-endif
 
 EXTRA_DIST = \
              README \

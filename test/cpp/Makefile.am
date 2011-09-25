@@ -57,10 +57,6 @@ TestServer_LDADD = \
 	$(top_builddir)/lib/cpp/libthriftnb.la \
 	-levent -lboost_program_options
 
-if WITH_BOOSTTHREADS
-TestServer_LDADD += -lboost_threads
-endif
-
 TestClient_SOURCES = \
 	src/TestClient.cpp
 
