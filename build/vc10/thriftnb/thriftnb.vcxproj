@@ -72,7 +72,7 @@
       <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <PrecompiledHeaderFile>../../../lib/cpp/src/windows/config.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>../../../lib/cpp/src/windows/config.h;../../../lib/cpp/src/windows/force_inc.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>../../../lib/cpp/src/windows/force_inc.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -88,7 +88,7 @@
       <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <PrecompiledHeaderFile>../../../lib/cpp/src/windows/config.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>../../../lib/cpp/src/windows/config.h;../../../lib/cpp/src/windows/force_inc.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>../../../lib/cpp/src/windows/force_inc.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,7 +105,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS=1;BOOST_ALL_NO_LIB</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>../../../lib/cpp/src/windows/config.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>../../../lib/cpp/src/windows/config.h;../../../lib/cpp/src/windows/force_inc.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>../../../lib/cpp/src/windows/force_inc.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,7 +124,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS=1;BOOST_ALL_NO_LIB;BOOST_ALL_NO_LIB</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.12/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.12/include;$(THIRD_PARTY)/libevent/libevent2.0.12/compat;$(THIRD_PARTY)/libevent/libevent2.0.12</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>../../../lib/cpp/src/windows/config.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>../../../lib/cpp/src/windows/config.h;../../../lib/cpp/src/windows/force_inc.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>../../../lib/cpp/src/windows/force_inc.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,9 +140,9 @@
     <ClInclude Include="..\..\..\lib\cpp\src\async\TAsyncProtocolProcessor.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\async\TEvhttpClientChannel.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\async\TEvhttpServer.h" />
+    <ClInclude Include="..\..\..\lib\cpp\src\concurrency\BoostThreadFactory.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Monitor.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Mutex.h" />
-    <ClInclude Include="..\..\..\lib\cpp\src\concurrency\PosixThreadFactory.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\ThreadManager.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Util.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\server\TNonblockingServer.h" />
@@ -169,9 +169,9 @@
     <ClCompile Include="..\..\..\lib\cpp\src\async\TAsyncProtocolProcessor.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\async\TEvhttpClientChannel.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\async\TEvhttpServer.cpp" />
-    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Monitor.cpp" />
-    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Mutex.cpp" />
-    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\PosixThreadFactory.cpp" />
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\BoostMonitor.cpp" />
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\BoostMutex.cpp" />
+    <ClCompile Include="..\..\..\lib\cpp\src\concurrency\BoostThreadFactory.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\ThreadManager.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Util.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\server\TNonblockingServer.cpp" />

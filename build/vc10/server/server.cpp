@@ -2,7 +2,7 @@
 //
 
 #include <concurrency/ThreadManager.h>
-#include <concurrency/PosixThreadFactory.h>
+#include <concurrency/BoostThreadFactory.h>
 #include <protocol/TBinaryProtocol.h>
 #include <server/TNonblockingServer.h>
 #include <async/TEvhttpServer.h>
@@ -20,6 +20,25 @@
 #include <boost/lexical_cast.hpp>
 
 #include "../gen-cpp/Calculator.h"
+
+#include <libs/thread/src/tss_null.cpp>
+#ifdef _WIN32
+#	include <libs/thread/src/win32/thread.cpp>
+#	include <libs/thread/src/win32/tss_pe.cpp>
+#	include <libs/thread/src/win32/tss_dll.cpp>
+#else
+#	include <libs/thread/src/pthread/thread.cpp>
+#	include <libs/thread/src/pthread/once.cpp>
+#	if BOOST_VERSION < 104400
+#		include <libs/thread/src/pthread/exceptions.cpp>
+#	endif
+#endif
+
+namespace boost {
+
+void tss_cleanup_implemented(void) {}
+
+}
 
 using namespace std;
 using namespace apache::thrift;
@@ -259,8 +278,8 @@ int main(int argc, char **argv)
 		// using thread pool with maximum 15 threads to handle incoming requests
 		boost::shared_ptr<ThreadManager> threadManager =
 			ThreadManager::newSimpleThreadManager(15);
-		boost::shared_ptr<PosixThreadFactory> threadFactory = boost::shared_ptr<
-			PosixThreadFactory> (new PosixThreadFactory());
+		boost::shared_ptr<BoostThreadFactory> threadFactory = boost::shared_ptr<
+			BoostThreadFactory> (new BoostThreadFactory());
 		threadManager->threadFactory(threadFactory);
 		threadManager->start();
 
