@@ -19,12 +19,7 @@
 
 #include "server/TThreadedServer.h"
 #include "transport/TTransportException.h"
-#ifndef USE_BOOST_THREAD
-#include "concurrency/PosixThreadFactory.h"
-#else
-#include "concurrency/BoostThreadFactory.h"
-#define PosixThreadFactory BoostThreadFactory
-#endif
+#include <concurrency/PlatformThreadFactory.h>
 
 #include <string>
 #include <iostream>
@@ -130,7 +125,7 @@ void TThreadedServer::init() {
   stop_ = false;
 
   if (!threadFactory_) {
-    threadFactory_.reset(new PosixThreadFactory);
+    threadFactory_.reset(new PlatformThreadFactory);
   }
 }
 

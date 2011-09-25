@@ -126,6 +126,12 @@
     <ClInclude Include="..\..\..\lib\cpp\src\transport\TFileTransport.h">
       <Filter>Source Files\transport</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\server\TThreadedServer.h">
+      <Filter>Source Files\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\cpp\src\server\TThreadPoolServer.h">
+      <Filter>Source Files\server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\lib\cpp\src\async\TAsyncChannel.cpp">
@@ -190,6 +196,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\lib\cpp\src\transport\TFileTransport.cpp">
       <Filter>Source Files\transport</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\server\TThreadedServer.cpp">
+      <Filter>Source Files\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\cpp\src\server\TThreadPoolServer.cpp">
+      <Filter>Source Files\server</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

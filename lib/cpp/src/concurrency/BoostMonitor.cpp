@@ -104,6 +104,35 @@ class Monitor::Impl : public interprocess_condition {
   }
 
   /**
+   * Waits until the absolute time specified using struct timespec.
+   * Returns 0 if condition occurs, ETIMEDOUT on timeout, or an error code.
+   */
+  int waitForTime(const timespec* abstime) {
+    assert(mutex_);
+    interprocess_mutex* mutexImpl =
+      reinterpret_cast<interprocess_mutex*>(mutex_->getUnderlyingImpl());
+    assert(mutexImpl);
+
+    struct timespec currenttime;
+    Util::toTimespec(currenttime, Util::currentTime());
+
+	long tv_sec = abstime->tv_sec - currenttime.tv_sec;
+	long tv_nsec = abstime->tv_nsec - currenttime.tv_nsec;
+	if(tv_sec < 0)
+		tv_sec = 0;
+	if(tv_nsec < 0)
+		tv_nsec = 0;
+
+	scoped_lock<interprocess_mutex> lock(*mutexImpl, accept_ownership_type());
+	int res = timed_wait(lock, boost::get_system_time() +
+		boost::posix_time::seconds(tv_sec) +
+		boost::posix_time::microseconds(tv_nsec / 1000)
+		) ? 0 : ETIMEDOUT;
+	lock.release();
+	return res;
+  }
+
+  /**
    * Waits forever until the condition occurs.
    * Returns 0 if condition occurs, or an error code otherwise.
    */
@@ -152,9 +181,9 @@ void Monitor::unlock() const { const_cast<Monitor::Impl*>(impl_)->unlock(); }
 
 void Monitor::wait(int64_t timeout) const { const_cast<Monitor::Impl*>(impl_)->wait(timeout); }
 
-/*int Monitor::waitForTime(const timespec* abstime) const {
+int Monitor::waitForTime(const timespec* abstime) const {
   return const_cast<Monitor::Impl*>(impl_)->waitForTime(abstime);
-}*/
+}
 
 int Monitor::waitForTimeRelative(int64_t timeout_ms) const {
   return const_cast<Monitor::Impl*>(impl_)->waitForTimeRelative(timeout_ms);

@@ -55,7 +55,17 @@ class BoostThreadFactory : public ThreadFactory {
   // From ThreadFactory;
   Thread::id_t getCurrentThreadId() const;
 
- private:
+  /**
+   * Sets detached mode of threads
+   */
+  virtual void setDetached(bool detached);
+
+  /**
+   * Gets current detached mode
+   */
+  virtual bool isDetached() const;
+
+private:
   class Impl;
   boost::shared_ptr<Impl> impl_;
 };

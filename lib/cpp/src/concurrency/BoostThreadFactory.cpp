@@ -170,6 +170,10 @@ BoostThreadFactory::BoostThreadFactory(bool detached) :
 
 shared_ptr<Thread> BoostThreadFactory::newThread(shared_ptr<Runnable> runnable) const { return impl_->newThread(runnable); }
 
+bool BoostThreadFactory::isDetached() const { return impl_->isDetached(); }
+
+void BoostThreadFactory::setDetached(bool value) { impl_->setDetached(value); }
+
 Thread::id_t BoostThreadFactory::getCurrentThreadId() const { return impl_->getCurrentThreadId(); }
 
 }}} // apache::thrift::concurrency

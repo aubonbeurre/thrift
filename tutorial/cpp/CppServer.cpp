@@ -18,7 +18,7 @@
  */
 
 #include <concurrency/ThreadManager.h>
-#include <concurrency/PosixThreadFactory.h>
+#include <concurrency/PlatformThreadFactory.h>
 #include <protocol/TBinaryProtocol.h>
 #include <server/TSimpleServer.h>
 #include <server/TThreadPoolServer.h>
@@ -130,8 +130,8 @@ int main(int argc, char **argv) {
 
   shared_ptr<ThreadManager> threadManager =
     ThreadManager::newSimpleThreadManager(workerCount);
-  shared_ptr<PosixThreadFactory> threadFactory =
-    shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+  shared_ptr<PlatformThreadFactory> threadFactory =
+    shared_ptr<PlatformThreadFactory>(new PlatformThreadFactory());
   threadManager->threadFactory(threadFactory);
   threadManager->start();
   TThreadPoolServer server(processor,

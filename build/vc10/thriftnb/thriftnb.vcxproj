@@ -146,6 +146,8 @@
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\ThreadManager.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\concurrency\Util.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\server\TNonblockingServer.h" />
+    <ClInclude Include="..\..\..\lib\cpp\src\server\TThreadedServer.h" />
+    <ClInclude Include="..\..\..\lib\cpp\src\server\TThreadPoolServer.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\TApplicationException.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\Thrift.h" />
     <ClInclude Include="..\..\..\lib\cpp\src\TLogging.h" />
@@ -178,6 +180,8 @@
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\ThreadManager.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\concurrency\Util.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\server\TNonblockingServer.cpp" />
+    <ClCompile Include="..\..\..\lib\cpp\src\server\TThreadedServer.cpp" />
+    <ClCompile Include="..\..\..\lib\cpp\src\server\TThreadPoolServer.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\TApplicationException.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\Thrift.cpp" />
     <ClCompile Include="..\..\..\lib\cpp\src\transport\TBufferTransports.cpp" />
