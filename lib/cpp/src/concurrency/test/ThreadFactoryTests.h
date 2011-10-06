@@ -24,7 +24,9 @@
 #include <concurrency/Util.h>
 
 #include <assert.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <iostream>
 #include <set>
 

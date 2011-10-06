@@ -27,7 +27,9 @@
 #include <string>
 #include <stdio.h>
 
+#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
+#endif
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
