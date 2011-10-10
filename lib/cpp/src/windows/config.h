@@ -31,6 +31,7 @@
 #pragma warning(disable: 4996) // Depreciated posix name.
 #pragma warning(disable: 4250) // Inherits via dominance.
 
+#define VERSION "0.8.0"
 #define HAVE_GETTIMEOFDAY 1
 #define HAVE_SYS_STAT_H 1
 
@@ -38,7 +39,7 @@
 #include "GetTimeOfDay.h"
 #include "Operators.h"
 #include "TWinsockSingleton.h"
-#include "Fcntl.h"
+#include "WinFcntl.h"
 #include "SocketPair.h"
 
 // boost
