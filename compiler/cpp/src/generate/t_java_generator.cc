@@ -1655,7 +1655,7 @@ void t_java_generator::generate_java_struct_writer(ofstream& out,
   indent(out) << "schemes.get(oprot.getScheme()).getScheme().write(oprot, this);" << endl;
 
   indent_down();
-  indent(out) << "  }" << endl << endl;	
+  indent(out) << "}" << endl << endl;	
 }
 
 /**
@@ -4059,8 +4059,10 @@ void t_java_generator::generate_java_struct_tuple_writer(ofstream& out, t_struct
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
   bool has_optional = false;
+  int optional_count = 0;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     if ((*f_iter)->get_req() == t_field::T_OPTIONAL || (*f_iter)->get_req() == t_field::T_OPT_IN_REQ_OUT) {
+      optional_count++;
       has_optional = true;
     }
     if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
@@ -4081,7 +4083,7 @@ void t_java_generator::generate_java_struct_tuple_writer(ofstream& out, t_struct
       }
     }
 
-    indent(out) << "oprot.writeBitSet(optionals);" << endl;
+    indent(out) << "oprot.writeBitSet(optionals, " << optional_count << ");" << endl;
     int j = 0;
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       if ((*f_iter)->get_req() == t_field::T_OPTIONAL || (*f_iter)->get_req() == t_field::T_OPT_IN_REQ_OUT) {
@@ -4123,6 +4125,6 @@ THRIFT_REGISTER_GENERATOR(java, "Java",
 "    nocamel:         Do not use CamelCase field accessors with beans.\n"
 "    hashcode:        Generate quality hashCode methods.\n"
 "    android_legacy:  Do not use java.io.IOException(throwable) (available for Android 2.3 and above).\n"
-"    java5:           Generate Java 1.5 compliant code (includes android_legacy flag)."
+"    java5:           Generate Java 1.5 compliant code (includes android_legacy flag).\n"
 )
 
