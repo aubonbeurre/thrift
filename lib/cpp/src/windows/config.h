@@ -58,8 +58,8 @@ typedef boost::uint8_t  uint8_t;
 #	include <pthread.h>
 #else
 struct timespec {
-	long tv_sec;
-	long tv_nsec;
+	int64_t tv_sec;
+	int64_t tv_nsec;
 };
 #	define USE_BOOST_THREAD 1
 #	define ctime_r( _clock, _buf ) \
@@ -94,8 +94,9 @@ inline int poll_win32(LPWSAPOLLFD fdArray, ULONG fds, INT timeout)
     return select(1, &read_fds, &write_fds, &except_fds, &time_out);
 }
 #else
-#   define poll(fds, nfds, timeout) \
-    WSAPoll(fds, nfds, timeout)
+	inline int poll(struct pollfd* fdArray, ULONG fds, INT timeout) {
+		return WSAPoll(fdArray, fds, timeout);
+	}
 #endif // WINVER
 
 inline void close(SOCKET socket)
