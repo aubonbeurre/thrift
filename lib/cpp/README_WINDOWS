@@ -64,6 +64,20 @@ http://www.boost.org/doc/libs/release/doc/html/thread.html
 libevent (for libthriftnb only)
 http://monkey.org/~provos/libevent/
 
+Notes on boost thread (static vs shared):
+=========================================
+
+By default lib/cpp/windows/force_inc.h defines:
+
+#define BOOST_ALL_NO_LIB 1
+#define BOOST_THREAD_NO_LIB 1
+
+This has for effect to have the host application linking against Thrift
+to have to link with boost thread as a static library.
+
+If you wanted instead to link with boost thread as a shared library,
+you'll need to uncomment those two lines, and recompile.
+
 Known issues
 ============
 

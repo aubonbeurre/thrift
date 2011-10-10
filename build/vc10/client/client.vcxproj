@@ -79,7 +79,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_ALL_NO_LIB</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.14/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.14/include;$(THIRD_PARTY)/libevent/libevent2.0.14/compat;$(THIRD_PARTY)/libevent/libevent2.0.14;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_47_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_47_0;$(THIRD_PARTY)/libevent/libevent2.0.14/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.14/include;$(THIRD_PARTY)/libevent/libevent2.0.14/compat;$(THIRD_PARTY)/libevent/libevent2.0.14;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -90,7 +90,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(THIRD_PARTY)/libevent/libevent2.0.14/build/vc10/$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevent.lib;thriftnb.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevent.lib;libthriftnb.lib;libthrift.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -98,7 +98,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_ALL_NO_LIB</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.14/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.14/include;$(THIRD_PARTY)/libevent/libevent2.0.14/compat;$(THIRD_PARTY)/libevent/libevent2.0.14;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_47_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_47_0;$(THIRD_PARTY)/libevent/libevent2.0.14/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.14/include;$(THIRD_PARTY)/libevent/libevent2.0.14/compat;$(THIRD_PARTY)/libevent/libevent2.0.14;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -109,7 +109,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(THIRD_PARTY)/libevent/libevent2.0.14/build/vc10/$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevent.lib;thriftnb.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevent.lib;libthriftnb.lib;libthrift.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -119,7 +119,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_ALL_NO_LIB</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.14/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.14/include;$(THIRD_PARTY)/libevent/libevent2.0.14/compat;$(THIRD_PARTY)/libevent/libevent2.0.14;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_47_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_47_0;$(THIRD_PARTY)/libevent/libevent2.0.14/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.14/include;$(THIRD_PARTY)/libevent/libevent2.0.14/compat;$(THIRD_PARTY)/libevent/libevent2.0.14;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <ForcedIncludeFiles>
@@ -131,7 +131,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(THIRD_PARTY)/libevent/libevent2.0.14/build/vc10/$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevent.lib;thriftnb.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevent.lib;libthriftnb.lib;libthrift.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,7 +141,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_ALL_NO_LIB</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_44_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_44_0;$(THIRD_PARTY)/libevent/libevent2.0.14/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.14/include;$(THIRD_PARTY)/libevent/libevent2.0.14/compat;$(THIRD_PARTY)/libevent/libevent2.0.14;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;../../../lib/cpp/src;$(THIRD_PARTY)/boost/boost_1_47_0/boost/tr1;$(THIRD_PARTY)/boost/boost_1_47_0;$(THIRD_PARTY)/libevent/libevent2.0.14/WIN32-Code;$(THIRD_PARTY)/libevent/libevent2.0.14/include;$(THIRD_PARTY)/libevent/libevent2.0.14/compat;$(THIRD_PARTY)/libevent/libevent2.0.14;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <ForcedIncludeFiles>
@@ -153,7 +153,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(THIRD_PARTY)/libevent/libevent2.0.14/build/vc10/$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libevent.lib;thriftnb.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libevent.lib;libthriftnb.lib;libthrift.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
