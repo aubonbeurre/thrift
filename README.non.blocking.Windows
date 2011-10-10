@@ -1,3 +1,5 @@
+(THIS FILE IS OBSOLETE, please refer to https://github.com/aubonbeurre/thrift/blob/winthriftnb-0.8.x-4/README.non.blocking.Windows)
+
 Apache Thrift non-blocking for Windows (using libevent)
 
 Last Modified: 2011-Jun-11
