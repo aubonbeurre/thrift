@@ -69,3 +69,7 @@ int gettimeofday(struct timeval * tv, struct timezone * tz)
 
     return -1;
 }
+
+int wsapoll(struct pollfd* fdArray, ULONG fds, INT timeout) {
+	return WSAPoll(fdArray, fds, timeout);
+}

@@ -91,8 +91,10 @@ int gettimeofday(struct timeval * tv, struct timezone * tz);
 #ifndef USE_SELECT_NOT_POLL
 //Answer: Works, but only on Windows 7 and Windows Server 2008 version od Winsocks2 DLL
 // see https://issues.apache.org/jira/browse/THRIFT-1123
-#   define poll(poll_array, count, timeout) \
-        WSAPoll(poll_array, count, timeout)
+extern int wsapoll(struct pollfd* fdArray, ULONG fds, INT timeout);
+inline int poll(struct pollfd* fdArray, ULONG fds, INT timeout) {
+	return wsapoll(fdArray, fds, timeout);
+}
 #endif //USE_SELECT_NOT_POLL
 
 #define usleep(ms) Sleep(ms)
