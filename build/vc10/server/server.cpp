@@ -2,7 +2,7 @@
 //
 
 #include <concurrency/ThreadManager.h>
-#include <concurrency/BoostThreadFactory.h>
+#include <concurrency/PlatformThreadFactory.h>
 #include <protocol/TBinaryProtocol.h>
 #include <server/TNonblockingServer.h>
 #include <async/TEvhttpServer.h>
@@ -278,8 +278,8 @@ int main(int argc, char **argv)
 		// using thread pool with maximum 15 threads to handle incoming requests
 		boost::shared_ptr<ThreadManager> threadManager =
 			ThreadManager::newSimpleThreadManager(15);
-		boost::shared_ptr<BoostThreadFactory> threadFactory = boost::shared_ptr<
-			BoostThreadFactory> (new BoostThreadFactory());
+		boost::shared_ptr<PlatformThreadFactory> threadFactory = boost::shared_ptr<
+			BoostThreadFactory> (new PlatformThreadFactory());
 		threadManager->threadFactory(threadFactory);
 		threadManager->start();
 
