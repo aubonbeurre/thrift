@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "server\server.vcxproj", "{7721BC13-8A32-414A-ABCA-0DA938C34BDB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F} = {DD26F57E-60F2-4F37-A616-D219A9BF338F}
+		{D8696CCE-7D46-4659-B432-91754A41DEB0} = {D8696CCE-7D46-4659-B432-91754A41DEB0}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\client.vcxproj", "{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F} = {DD26F57E-60F2-4F37-A616-D219A9BF338F}
+		{D8696CCE-7D46-4659-B432-91754A41DEB0} = {D8696CCE-7D46-4659-B432-91754A41DEB0}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libthrift", "..\..\lib\cpp\libthrift.vcxproj", "{DD26F57E-60F2-4F37-A616-D219A9BF338F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libthriftnb", "..\..\lib\cpp\libthriftnb.vcxproj", "{D8696CCE-7D46-4659-B432-91754A41DEB0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Debug|Win32.Build.0 = Debug|Win32
+		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Debug|x64.ActiveCfg = Debug|x64
+		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Debug|x64.Build.0 = Debug|x64
+		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Release|Win32.ActiveCfg = Release|Win32
+		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Release|Win32.Build.0 = Release|Win32
+		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Release|x64.ActiveCfg = Release|x64
+		{7721BC13-8A32-414A-ABCA-0DA938C34BDB}.Release|x64.Build.0 = Release|x64
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Debug|Win32.Build.0 = Debug|Win32
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Debug|x64.ActiveCfg = Debug|x64
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Debug|x64.Build.0 = Debug|x64
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Release|Win32.ActiveCfg = Release|Win32
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Release|Win32.Build.0 = Release|Win32
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Release|x64.ActiveCfg = Release|x64
+		{751D2E72-3D07-4D46-8E7E-65E0D27DDE1F}.Release|x64.Build.0 = Release|x64
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F}.Debug|Win32.Build.0 = Debug|Win32
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F}.Debug|x64.ActiveCfg = Debug|x64
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F}.Debug|x64.Build.0 = Debug|x64
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F}.Release|Win32.ActiveCfg = Release|Win32
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F}.Release|Win32.Build.0 = Release|Win32
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F}.Release|x64.ActiveCfg = Release|x64
+		{DD26F57E-60F2-4F37-A616-D219A9BF338F}.Release|x64.Build.0 = Release|x64
+		{D8696CCE-7D46-4659-B432-91754A41DEB0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D8696CCE-7D46-4659-B432-91754A41DEB0}.Debug|Win32.Build.0 = Debug|Win32
+		{D8696CCE-7D46-4659-B432-91754A41DEB0}.Debug|x64.ActiveCfg = Debug|x64
+		{D8696CCE-7D46-4659-B432-91754A41DEB0}.Debug|x64.Build.0 = Debug|x64
+		{D8696CCE-7D46-4659-B432-91754A41DEB0}.Release|Win32.ActiveCfg = Release|Win32
+		{D8696CCE-7D46-4659-B432-91754A41DEB0}.Release|Win32.Build.0 = Release|Win32
+		{D8696CCE-7D46-4659-B432-91754A41DEB0}.Release|x64.ActiveCfg = Release|x64
+		{D8696CCE-7D46-4659-B432-91754A41DEB0}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
