@@ -25,6 +25,7 @@
 
 #include <cassert>
 #include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 namespace apache { namespace thrift { namespace concurrency {
@@ -34,7 +35,7 @@ namespace apache { namespace thrift { namespace concurrency {
  *
  * @version $Id:$
  */
-class Mutex::impl : public boost::mutex {
+class Mutex::impl : public boost::timed_mutex {
 };
 
 Mutex::Mutex(Initializer init) : impl_(new Mutex::impl()) {}

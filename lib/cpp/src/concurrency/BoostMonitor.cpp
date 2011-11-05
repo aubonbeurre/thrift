@@ -38,7 +38,7 @@ namespace apache { namespace thrift { namespace concurrency {
  *
  * @version $Id:$
  */
-class Monitor::Impl : public boost::condition_variable {
+class Monitor::Impl : public boost::condition_variable_any {
 
  public:
 
@@ -91,11 +91,11 @@ class Monitor::Impl : public boost::condition_variable {
     }
 
     assert(mutex_);
-	boost::mutex* mutexImpl =
-      reinterpret_cast<boost::mutex*>(mutex_->getUnderlyingImpl());
+	boost::timed_mutex* mutexImpl =
+      reinterpret_cast<boost::timed_mutex*>(mutex_->getUnderlyingImpl());
     assert(mutexImpl);
 
-	boost::mutex::scoped_lock lock(*mutexImpl, boost::adopt_lock);
+	boost::timed_mutex::scoped_lock lock(*mutexImpl, boost::adopt_lock);
 	int res = timed_wait(lock, boost::get_system_time()+boost::posix_time::milliseconds(timeout_ms)) ? 0 : ETIMEDOUT;
 	lock.release();
 	return res;
@@ -107,8 +107,8 @@ class Monitor::Impl : public boost::condition_variable {
    */
   int waitForTime(const timespec* abstime) {
     assert(mutex_);
-    boost::mutex* mutexImpl =
-      reinterpret_cast<boost::mutex*>(mutex_->getUnderlyingImpl());
+    boost::timed_mutex* mutexImpl =
+      reinterpret_cast<boost::timed_mutex*>(mutex_->getUnderlyingImpl());
     assert(mutexImpl);
 
     struct timespec currenttime;
@@ -121,7 +121,7 @@ class Monitor::Impl : public boost::condition_variable {
 	if(tv_nsec < 0)
 		tv_nsec = 0;
 
-	boost::mutex::scoped_lock lock(*mutexImpl, boost::adopt_lock);
+	boost::timed_mutex::scoped_lock lock(*mutexImpl, boost::adopt_lock);
 	int res = timed_wait(lock, boost::get_system_time() +
 		boost::posix_time::seconds(tv_sec) +
 		boost::posix_time::microseconds(tv_nsec / 1000)
@@ -136,12 +136,12 @@ class Monitor::Impl : public boost::condition_variable {
    */
   int waitForever() {
     assert(mutex_);
-    boost::mutex* mutexImpl =
-      reinterpret_cast<boost::mutex*>(mutex_->getUnderlyingImpl());
+    boost::timed_mutex* mutexImpl =
+      reinterpret_cast<boost::timed_mutex*>(mutex_->getUnderlyingImpl());
     assert(mutexImpl);
 
-	boost::mutex::scoped_lock lock(*mutexImpl, boost::adopt_lock);
-	((boost::condition_variable*)this)->wait(lock);
+	boost::timed_mutex::scoped_lock lock(*mutexImpl, boost::adopt_lock);
+	((boost::condition_variable_any*)this)->wait(lock);
 	lock.release();
     return 0;
   }
