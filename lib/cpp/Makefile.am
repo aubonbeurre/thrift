@@ -103,10 +103,6 @@ libthriftz_la_CXXFLAGS  = $(AM_CXXFLAGS)
 libthriftnb_la_LDFLAGS  = -release $(VERSION) $(BOOST_LDFLAGS)
 libthriftz_la_LDFLAGS   = -release $(VERSION) $(BOOST_LDFLAGS)
 
-if WITH_BOOSTTHREADS
-libthrift_la_LIBADD = -lboost_thread
-endif
-
 include_thriftdir = $(includedir)/thrift
 include_thrift_HEADERS = \
                          $(top_builddir)/config.h \
