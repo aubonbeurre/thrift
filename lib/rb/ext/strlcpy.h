@@ -17,21 +17,14 @@
  * under the License.
  */
 
-/**
- * This Thrift file can be included by other Thrift files that want to share
- * these definitions.
- */
 
-namespace cpp shared
-namespace java shared
-namespace perl shared
-namespace php shared
+#include <sys/types.h>
+#include <string.h>
 
-struct SharedStruct {
-  1: i32 key
-  2: string value
-}
+#ifndef HAVE_STRLCPY
+size_t
+strlcpy (char *dst, const char *src, size_t dst_sz);
+#else
+extern size_t strlcpy(char *, const char *, size_t);
+#endif
 
-service SharedService {
-  SharedStruct getStruct(1: i32 key)
-}

@@ -2546,7 +2546,7 @@ void t_java_generator::generate_service_server(t_service* tservice) {
   string extends = "";
   string extends_processor = "";
   if (tservice->get_extends() == NULL) {
-    extends_processor = "org.apache.thrift.TBaseProcessor";
+    extends_processor = "org.apache.thrift.TBaseProcessor<I>";
   } else {
     extends = type_name(tservice->get_extends());
     extends_processor = extends + ".Processor";
@@ -3266,7 +3266,7 @@ string t_java_generator::declare_field(t_field* tfield, bool init) {
     }
   }
   result += "; // ";
-  if (tfield->get_xsd_optional()) {
+  if (tfield->get_req() == t_field::T_OPTIONAL) {
     result += "optional";
   } else {
     result += "required";

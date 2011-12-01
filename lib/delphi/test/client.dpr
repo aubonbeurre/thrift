@@ -29,6 +29,7 @@ uses
   Thrift in '..\..\..\lib\delphi\src\Thrift.pas',
   Thrift.Transport in '..\..\..\lib\delphi\src\Thrift.Transport.pas',
   Thrift.Protocol in '..\..\..\lib\delphi\src\Thrift.Protocol.pas',
+  Thrift.Protocol.JSON in '..\..\..\lib\delphi\src\Thrift.Protocol.JSON.pas',
   Thrift.Collections in '..\..\..\lib\delphi\src\Thrift.Collections.pas',
   Thrift.Server in '..\..\..\lib\delphi\src\Thrift.Server.pas',
   Thrift.Stream in '..\..\..\lib\delphi\src\Thrift.Stream.pas',
@@ -44,6 +45,7 @@ var
 
 begin
   try
+    Writeln( 'Delphi TestClient '+Thrift.Version);
     nParamCount := ParamCount;
     SetLength( args, nParamCount);
     for i := 1 to nParamCount do

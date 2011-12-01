@@ -1,4 +1,4 @@
-/*
+(*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,23 +15,22 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */
+ *)
 
-/**
- * This Thrift file can be included by other Thrift files that want to share
- * these definitions.
- */
+unit TestConstants;
 
-namespace cpp shared
-namespace java shared
-namespace perl shared
-namespace php shared
+interface
 
-struct SharedStruct {
-  1: i32 key
-  2: string value
-}
+type
+  TKnownProtocol = ( prot_Binary,  // default binary protocol
+                     prot_JSON     // JSON protocol
+                   );
+const
+  KNOWN_PROTOCOLS : array[TKnownProtocol] of string
+                  = ('binary', 'JSON');
 
-service SharedService {
-  SharedStruct getStruct(1: i32 key)
-}
+implementation
+
+// nothing
+
+end.

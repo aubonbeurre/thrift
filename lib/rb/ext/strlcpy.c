@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -17,21 +17,25 @@
  * under the License.
  */
 
-/**
- * This Thrift file can be included by other Thrift files that want to share
- * these definitions.
- */
+#include "strlcpy.h"
 
-namespace cpp shared
-namespace java shared
-namespace perl shared
-namespace php shared
+#ifndef HAVE_STRLCPY
+#define HAVE_STRLCPY
+size_t
+strlcpy (char *dst, const char *src, size_t dst_sz)
+{
+    size_t n;
 
-struct SharedStruct {
-  1: i32 key
-  2: string value
+    for (n = 0; n < dst_sz; n++) {
+      if ((*dst++ = *src++) == '\0')
+        break;
+    }
+
+    if (n < dst_sz)
+      return n;
+    if (n > 0)
+      *(dst - 1) = '\0';
+    return n + strlen (src);
 }
+#endif
 
-service SharedService {
-  SharedStruct getStruct(1: i32 key)
-}
