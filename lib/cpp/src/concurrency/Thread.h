@@ -28,6 +28,10 @@
 #include <boost/thread.hpp>
 #endif
 
+#ifdef HAVE_PTHREAD_H
+#include <pthread.h>
+#endif
+
 namespace apache { namespace thrift { namespace concurrency {
 
 class Thread;
