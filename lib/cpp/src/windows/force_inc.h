@@ -28,9 +28,6 @@
 #error This is a MSVC header only.
 #endif
 
-#pragma warning(disable: 4244) // conversion from '...' to '...', possible loss of data.
-#pragma warning(disable: 4267) // conversion from '...' to '...', possible loss of data.
-
 #define NOMINMAX
 #define BOOST_ALL_NO_LIB 1
 #define BOOST_THREAD_NO_LIB 1

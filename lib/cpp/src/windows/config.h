@@ -30,6 +30,8 @@
 
 #pragma warning(disable: 4996) // Depreciated posix name.
 #pragma warning(disable: 4250) // Inherits via dominance.
+#pragma warning(disable: 4244) // conversion from '...' to '...', possible loss of data.
+#pragma warning(disable: 4267) // conversion from '...' to '...', possible loss of data.
 
 #define VERSION "0.9.0-dev"
 #define HAVE_GETTIMEOFDAY 1

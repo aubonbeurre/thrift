@@ -62,6 +62,10 @@
 #define AF_LOCAL AF_UNIX
 #endif
 
+#ifdef _MSC_VER
+#define PRIu32 "I32u"
+#endif
+
 namespace apache { namespace thrift { namespace server {
 
 using namespace apache::thrift::protocol;
