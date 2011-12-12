@@ -1360,7 +1360,7 @@ bool TNonblockingIOThread::notify(TNonblockingServer::TConnection* conn) {
 }
 
 /* static */
-void TNonblockingIOThread::notifyHandler(int fd, short which, void* v) {
+void TNonblockingIOThread::notifyHandler(evutil_socket_t fd, short which, void* v) {
   TNonblockingIOThread* ioThread = (TNonblockingIOThread*) v;
   assert(ioThread);
   (void)which;

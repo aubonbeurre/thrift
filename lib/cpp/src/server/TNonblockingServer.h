@@ -839,7 +839,7 @@ class TNonblockingIOThread : public Runnable {
    *
    * @param fd the descriptor the event occurred on.
    */
-  static void notifyHandler(int fd, short which, void* v);
+  static void notifyHandler(evutil_socket_t fd, short which, void* v);
 
   /**
    * C-callable event handler for listener events.  Provides a callback
