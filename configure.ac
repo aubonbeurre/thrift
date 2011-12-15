@@ -283,6 +283,18 @@ if test "$with_tests" = "no"; then
 fi
 AM_CONDITIONAL(WITH_TESTS, [test "$have_tests" = "yes"])
 
+AM_CONDITIONAL(MINGW, false)
+case "${host_os}" in
+*mingw*)
+  mingw32_support="yes"
+  AC_CHECK_HEADER(windows.h)
+  AM_CONDITIONAL(MINGW, true)
+  ;;
+*)
+  AC_ISC_POSIX
+  ;;
+esac
+
 AC_C_CONST
 AC_C_INLINE
 AC_C_VOLATILE
@@ -313,6 +325,7 @@ AC_CHECK_HEADERS([malloc.h])
 AC_CHECK_HEADERS([openssl/ssl.h])
 AC_CHECK_HEADERS([openssl/rand.h])
 AC_CHECK_HEADERS([openssl/x509v3.h])
+AC_CHECK_HEADERS([sched.h])
 
 AC_CHECK_LIB(pthread, pthread_create)
 dnl NOTE(dreiss): I haven't been able to find any really solid docs
